@@ -1,0 +1,22 @@
+{% extends "frontend/layout.html" %}
+{% block body %}
+<h1>Audios Example</h1>
+
+{%for wavFile in wavFile %}
+<ul>
+
+<audio controls>
+    <source src= "{{wavFile.location.url}}" type="audio/wav">
+
+</audio>
+
+<form method="post">
+    {% csrf_token%}
+    {{ form }}
+    <button type="submit">sumbit </button>
+</form>
+</ul>
+{%endfor%}
+
+
+{% endblock %}

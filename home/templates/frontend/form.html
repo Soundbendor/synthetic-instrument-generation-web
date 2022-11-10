@@ -1,0 +1,16 @@
+{% extends "frontend/layout.html" %}
+
+{% block body %}
+    <center>
+    <h1> Add rating </h1>
+        <br/><br/>
+      
+            <form action="" method=POST>
+                {% csrf_token%}
+                {{form.as_p}}
+                <button button="sumbit" value="Sumbit" >
+            </form>
+        
+    </center>
+
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends "frontend/layout.html" %}
+
+{% block body %}
+    <ul>
+        {% for x in scores%}
+            <li> Scores: {{x.score}}</li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

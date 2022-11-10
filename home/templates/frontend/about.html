@@ -1,0 +1,28 @@
+{% load static%}
+<!DOCTYPE html>
+<!-- This page introduce the project -->
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+  
+
+    <link href="{% static 'frontend/index.css' %}" rel="stylesheet" type="text/css" />
+
+    
+  </head>
+  <body>
+    <div class="home">
+ 
+      <h1 class="title"> About </h1>
+      <p class = "simpleIntro"> This is a survey that help improve machince learning music.<br>Select the one you think is better to help the AI write better music! </p> 
+
+      <a href =#home class="link1"> Home </a>
+      <a href ="{% url 'about' %}" class="link2"> About </a>
+      <a href ="{% url 'survey' %}" class="link3"> Rate </a>
+      <a href =#home class="link4"> onhold </a>
+    </div>
+    
+  
+  </body>
+</html>
