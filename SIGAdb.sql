@@ -1,77 +1,77 @@
 create table populations (
-  populationID int,
-  generation_number, int,
+  populationID int NOT NULL AUTO_INCREMENT,
+  generation_number int NOT NULL,
   PRIMARY KEY (populationID)
  );
  
 create table chromosomes (
-   chromosomeID int,
-   populationID int, 
+   chromosomeID int NOT NULL AUTO_INCREMENT,
+   populationID int NOT NULL, 
    FOREIGN KEY (populationid) REFERENCES populations(populationid),
    PRIMARY key (chromosomeID)
   );
 
 create table weights (
-   chromosomeID int, 
+   chromosomeID int NOT NULL AUTO_INCREMENT, 
    FOREIGN KEY (chromosomeID) REFERENCES chromosomes(chromosomeID)
   );
 
 create table base_Frequencies (
-   chromosomeID int, 
+   chromosomeID int NOT NULL AUTO_INCREMENT, 
    FOREIGN KEY (chromosomeID) REFERENCES chromosomes(chromosomeID)
   );
 
 create table genes (
-   geneID int,
-   chromosomeID int, 
+   geneID int NOT NULL AUTO_INCREMENT,
+   chromosomeID int NOT NULL, 
    FOREIGN KEY (chromosomeID) REFERENCES chromosomes(chromosomeID),
    primary key (geneid)
   );
 
 create table harmonics (
-   harmonicID int,
-   value int,
-   geneID int,
+   harmonicID int NOT NULL AUTO_INCREMENT,
+   value int NOT NULL,
+   geneID int NOT NULL,
    FOREIGN KEY (geneID) REFERENCES genes(geneID),
    primary key (harmonicID)
   );
 
 create table amplitudes (
-   amplitudeID int,
-   value int,
-   geneID int,
+   amplitudeID int NOT NULL AUTO_INCREMENT,
+   value int NOT NULL,
+   geneID int NOT NULL,
    FOREIGN KEY (geneID) REFERENCES genes(geneID),
    primary key (amplitudeID)
   );
 
 create table attacks (
-   attacksID int,
-   value int,
-   geneID int,
+   attacksID int NOT NULL AUTO_INCREMENT,
+   value int NOT NULL,
+   geneID int NOT NULL,
    FOREIGN KEY (geneID) REFERENCES genes(geneID),
    primary key (attacksID)
   );
 
 create table decays (
-   decaysID int,
-   value int,
-   geneID int,
+   decaysID int NOT NULL AUTO_INCREMENT,
+   value int NOT NULL,
+   geneID int NOT NULL,
    FOREIGN KEY (geneID) REFERENCES genes(geneID),
    primary key (decaysID)
   );
 
 create table sustains (
-   sustainID int,
-   value int,
-   geneID int,
+   sustainID int NOT NULL AUTO_INCREMENT,
+   value int NOT NULL,
+   geneID int NOT NULL,
    FOREIGN KEY (geneID) REFERENCES genes(geneID),
    primary key (sustainID)
   );
 
 create table releases (
-   releaseID int,
-   value int,
-   geneID int,
+   releaseID int NOT NULL AUTO_INCREMENT,
+   value int NOT NULL,
+   geneID int NOT NULL,
    FOREIGN KEY (geneID) REFERENCES genes(geneID),
    primary key (releaseID)
   );

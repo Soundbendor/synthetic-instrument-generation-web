@@ -17,10 +17,6 @@ textColor = '#FFFFFF'
 # Default: "sans serif"
 font = "sans serif"
 
-
-
-
-
 #st.markdown("""
 #<style>
 #div.stButton > button:first-child {
