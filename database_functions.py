@@ -1,6 +1,7 @@
 import mysql.connector
+import streamlit as st
 
-def soundButtonAClick():
+def voteButtonAClick():
     cnx = mysql.connector.connect(user='brad01', password='stayout123',
                               host='74.208.128.230',
                               database='brad01')
@@ -15,7 +16,9 @@ def soundButtonAClick():
         
     cnx.close()
     
-def soundButtonBClick():
+    #st.experimental_rerun()
+    
+def voteButtonBClick():
     cnx = mysql.connector.connect(user='brad01', password='stayout123',
                               host='74.208.128.230',
                               database='brad01')
