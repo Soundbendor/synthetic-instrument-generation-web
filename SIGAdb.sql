@@ -75,3 +75,11 @@ create table releases (
    FOREIGN KEY (geneID) REFERENCES genes(geneID),
    primary key (releaseID)
   );
+  
+create table votes (
+   releaseID int NOT NULL AUTO_INCREMENT,
+   value int NOT NULL,
+   geneID int NOT NULL,
+   FOREIGN KEY (geneID) REFERENCES genes(geneID),
+   primary key (releaseID)
+  );
