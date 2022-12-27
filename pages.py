@@ -63,6 +63,9 @@ def main():
     
     if choice == "Home":
         st.title("Home")
+        col1, col2, col3 = st.columns(3)
+        with col2:
+            st.image("images/db.png")
     elif choice == "Sounds":
         st.title("Sounds")
         
@@ -88,6 +91,7 @@ def main():
                 
     else:
         st.title("About")
+        st.text("Lorem ipsum dolor sit amet, consectetur adipiscing elit,\nsed do eiusmod tempor incididunt ut labore et dolore magna\naliqua. Ut enim ad minim veniam, quis nostrud exercitation\nullamco laboris nisi ut aliquip ex ea commodo consequat.\nDuis aute irure dolor in reprehenderit in voluptate velit\nesse cillum dolore eu fugiat nulla pariatur. Excepteur sint\noccaecat cupidatat non proident, sunt in culpa qui officia\ndeserunt mollit anim id est laborum.")
     
         
 if __name__ == '__main__':
