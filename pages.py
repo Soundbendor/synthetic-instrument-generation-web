@@ -1,9 +1,10 @@
 import streamlit as st
 import pandas as pd
-from database_functions import voteButtonAClick, voteButtonBClick
+from database_functions import *
 import time
 import base64
 import random
+
 
 def playSoundButton1(path):
     #    with open("./sounds/sound 8.wav", "rb") as f:
@@ -82,6 +83,9 @@ def main():
             with col3:
                 button2 = st.button("Sound B", on_click = voteButtonBClick)
                 playButton2 = st.button("▶ ", key = 2, on_click = playSoundButton2, args =(random_choices[1],))
+            with col4:
+                st.subheader("Total Votes" + ": " + str(voteCount))
+                
     else:
         st.title("About")
     

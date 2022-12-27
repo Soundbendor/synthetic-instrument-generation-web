@@ -7,6 +7,8 @@ create table populations (
 create table chromosomes (
    chromosomeID int NOT NULL AUTO_INCREMENT,
    populationID int NOT NULL, 
+   parentChromosomeID int NOT NULL,
+   childrenChromosomeID int NOT NULL,
    FOREIGN KEY (populationid) REFERENCES populations(populationid),
    PRIMARY key (chromosomeID)
   );
