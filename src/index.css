@@ -1,0 +1,66 @@
+html * {
+    font-family: georgia;
+}
+
+body
+{
+    background-color: rgb(215, 63, 9);
+}
+
+.horizontal-center 
+{
+    width: 300px;
+    margin: auto;
+    padding: 5px;
+}
+
+.vertical-center
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.navbar 
+{
+    background-color: black;
+    border-radius: 25px;
+    width: 100%;
+}
+
+.navitem 
+{
+    padding: 16px;
+    color: white;
+    text-decoration: none;
+}
+
+.navitem:hover
+{
+    opacity: 50%;
+}
+
+.voteBox
+{
+    width:50%;
+    margin: 1%;
+}
+
+.voteButton
+{
+    background-color: white;
+    font-size: 15px;
+    border-radius: 25px;
+    border: 0px;
+
+    margin-top: 25px;
+    margin-left: 1%;
+    position: absolute;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+.voteButton:hover
+{
+    opacity: 75%;
+}

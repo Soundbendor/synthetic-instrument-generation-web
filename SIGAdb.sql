@@ -1,11 +1,12 @@
+USE [siga]
 create table populations (
-  populationID int NOT NULL AUTO_INCREMENT,
+  populationID int NOT NULL identity(1, 1),
   generation_number int NOT NULL,
   PRIMARY KEY (populationID)
  );
  
 create table chromosomes (
-   chromosomeID int NOT NULL AUTO_INCREMENT,
+   chromosomeID int NOT NULL identity(1, 1),
    populationID int NOT NULL, 
    parentChromosomeID int NOT NULL,
    childrenChromosomeID int NOT NULL,
@@ -14,24 +15,24 @@ create table chromosomes (
   );
 
 create table weights (
-   chromosomeID int NOT NULL AUTO_INCREMENT, 
+   chromosomeID int NOT NULL identity(1, 1), 
    FOREIGN KEY (chromosomeID) REFERENCES chromosomes(chromosomeID)
   );
 
 create table base_Frequencies (
-   chromosomeID int NOT NULL AUTO_INCREMENT, 
+   chromosomeID int NOT NULL identity(1, 1), 
    FOREIGN KEY (chromosomeID) REFERENCES chromosomes(chromosomeID)
   );
 
 create table genes (
-   geneID int NOT NULL AUTO_INCREMENT,
+   geneID int NOT NULL identity(1, 1),
    chromosomeID int NOT NULL, 
    FOREIGN KEY (chromosomeID) REFERENCES chromosomes(chromosomeID),
    primary key (geneid)
   );
 
 create table harmonics (
-   harmonicID int NOT NULL AUTO_INCREMENT,
+   harmonicID int NOT NULL identity(1, 1),
    value int NOT NULL,
    geneID int NOT NULL,
    FOREIGN KEY (geneID) REFERENCES genes(geneID),
@@ -39,7 +40,7 @@ create table harmonics (
   );
 
 create table amplitudes (
-   amplitudeID int NOT NULL AUTO_INCREMENT,
+   amplitudeID int NOT NULL identity(1, 1),
    value int NOT NULL,
    geneID int NOT NULL,
    FOREIGN KEY (geneID) REFERENCES genes(geneID),
@@ -47,7 +48,7 @@ create table amplitudes (
   );
 
 create table attacks (
-   attacksID int NOT NULL AUTO_INCREMENT,
+   attacksID int NOT NULL identity(1, 1),
    value int NOT NULL,
    geneID int NOT NULL,
    FOREIGN KEY (geneID) REFERENCES genes(geneID),
@@ -55,7 +56,7 @@ create table attacks (
   );
 
 create table decays (
-   decaysID int NOT NULL AUTO_INCREMENT,
+   decaysID int NOT NULL identity(1, 1),
    value int NOT NULL,
    geneID int NOT NULL,
    FOREIGN KEY (geneID) REFERENCES genes(geneID),
@@ -63,7 +64,7 @@ create table decays (
   );
 
 create table sustains (
-   sustainID int NOT NULL AUTO_INCREMENT,
+   sustainID int NOT NULL identity(1, 1),
    value int NOT NULL,
    geneID int NOT NULL,
    FOREIGN KEY (geneID) REFERENCES genes(geneID),
@@ -71,7 +72,7 @@ create table sustains (
   );
 
 create table releases (
-   releaseID int NOT NULL AUTO_INCREMENT,
+   releaseID int NOT NULL identity(1, 1),
    value int NOT NULL,
    geneID int NOT NULL,
    FOREIGN KEY (geneID) REFERENCES genes(geneID),
@@ -79,7 +80,7 @@ create table releases (
   );
   
 create table votes (
-   releaseID int NOT NULL AUTO_INCREMENT,
+   releaseID int NOT NULL identity(1, 1),
    value int NOT NULL,
    geneID int NOT NULL,
    FOREIGN KEY (geneID) REFERENCES genes(geneID),
