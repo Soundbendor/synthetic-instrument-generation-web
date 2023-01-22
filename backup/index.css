@@ -12,7 +12,6 @@ body
     width: 300px;
     margin: auto;
     padding: 5px;
-    margin-top:5%;
 }
 
 .vertical-center
@@ -54,13 +53,12 @@ body
     font-size: 15px;
     border-radius: 25px;
     border: 0px;
+
     margin-top: 25px;
     margin-left: 1%;
+    position: absolute;
     -ms-transform: translateY(-50%);
     transform: translateY(-50%);
-    float: right;
-    position: relative;
-    left: -43%;
 }
 
 .voteButton:hover
