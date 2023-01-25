@@ -59,7 +59,7 @@ function AudioPlayers(props)
               showJumpControls={false}
             />
 
-                <button className = "voteButton" onClick = {vote1}>Vote 1</button>
+                <button className = "voteButton" onClick = {getData}>Vote 1</button>
           </div>
           <div className = "voteBox, horizontal-center">
           <AudioPlayer
