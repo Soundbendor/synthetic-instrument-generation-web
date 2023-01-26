@@ -13,3 +13,5 @@ To host website using React install flask & run these commands to install used p
 ``` $env:FLASK_APP="webapp.py" ``` 
 
 ``` py -m flask run ```
+
+![SIG Website](./src/website.JPG)
