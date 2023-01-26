@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { Link } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import {BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import {AnimatePresence, motion} from 'framer-motion/dist/framer-motion'
 
 import './index.css';
 import Home from "./Home";
@@ -11,29 +12,29 @@ import About from "./About";
 function Header() 
 {
     return (
-        <nav>
             <div className = "navbar vertical-center">
-                <Link className = "navitem" to="/">Home</Link>
-                <Link className = "navitem" to="/Sig">Synthetic Instrument Generation</Link>
-                <Link className = "navitem" to="/About">About</Link>
+                <NavLink className = "navitem" to="/">Home</NavLink>
+                <NavLink className = "navitem" to="/Sig">SIG</NavLink>
+                <NavLink className = "navitem" to="/About">About</NavLink>
             </div>
-        </nav>
 );
 }
 
 function App () 
 {
     return (
-        <Router>
-            <div className = "App">
-                <Header />
-                <Routes>
-                    <Route exact path = "/" element = {<Home/>} />
-                    <Route path = "/About" element = {<About/>} />
-                    <Route path = "/Sig" element = {<Sig/>} />
-                </Routes>
-            </div>
-        </Router>
+        <AnimatePresence>
+            <Router>
+                <div className = "App">
+                    <Header />
+                    <Routes>
+                        <Route exact path = "/" element = {<Home/>} />
+                        <Route path = "/About" element = {<About/>} />
+                        <Route path = "/Sig" element = {<Sig/>} />
+                    </Routes>
+                </div>
+            </Router>
+        </AnimatePresence>
     )
 }
 
