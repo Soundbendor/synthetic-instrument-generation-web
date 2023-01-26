@@ -1,8 +1,11 @@
 import React from 'react';
+import {AnimatePresence, motion} from 'framer-motion/dist/framer-motion'
 
 const Home = () => {
     return (
-      <h1>Home</h1>
+<motion.div initial={{opacity:0}} animate = {{opacity: 1}} exit={{opacity:0}}>
+        <h1>This is the homepage.</h1>;
+      </motion.div>
     )
   };
   

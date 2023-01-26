@@ -2,6 +2,8 @@ import React from 'react';
 import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
 import axios from "axios";
+import bird from "./bird.webm"
+import {AnimatePresence, motion} from 'framer-motion/dist/framer-motion'
 
 //import Animal from "react-animals";
 //import AWS from 'aws-sdk'
@@ -51,17 +53,31 @@ function AudioPlayers(props)
 
   return (
       <div>
-          <div className = "voteBox, horizontal-center">
-            <AudioPlayer
-              src={"https://cdn.freesound.org/previews/321/321029_5123851-lq.mp3"}
-              onPlay={e => console.log("onPlay")}
-              customAdditionalControls = {[]}
-              showJumpControls={false}
-            />
+        <div>
+          <motion.div initial={{opacity:0}} animate = {{opacity: 1}} exit={{opacity:0}}>
+            <h1>Synthetic Instrument Generation</h1>;
+          </motion.div>
+        </div>
+        <div>
+          <div className = "voteBox horizontal-center">
+            <video className = "videoPlayer" width="320" height="240" autoPlay muted>
+              <source src={bird} type="video/webm"/>
+            Your browser does not support the video tag.
+            </video>
+              <AudioPlayer className = "audioPlayer"
+                src={"https://cdn.freesound.org/previews/321/321029_5123851-lq.mp3"}
+                onPlay={e => console.log("onPlay")}
+                customAdditionalControls = {[]}
+                showJumpControls={false}
+              />
 
-                <button className = "voteButton" onClick = {getData}>Vote 1</button>
+            <button className = "voteButton" onClick = {getData}>Vote 1</button>
           </div>
           <div className = "voteBox, horizontal-center">
+          <video className = "videoPlayer" width="320" height="240" autoPlay muted>
+            <source src={bird} type="video/webm"/>
+          Your browser does not support the video tag.
+          </video>
           <AudioPlayer
               src={"https://cdn.freesound.org/previews/321/321029_5123851-lq.mp3"}
               onPlay={e => console.log("onPlay")}
@@ -75,6 +91,8 @@ function AudioPlayers(props)
             <p>Sound_2: {sounds.sound_2}</p>
           </div>
           }
+        </div>
+
       </div>
   )
 }
