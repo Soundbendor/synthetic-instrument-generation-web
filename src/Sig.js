@@ -4,18 +4,22 @@ import bird from "./bird.webm"
 import * as Tone from 'tone'
 import {motion} from 'framer-motion/dist/framer-motion'
 
-const numFrequencies1 = Math.floor(Math.random() * 10);
-const numFrequencies2 = Math.floor(Math.random() * 10);
+// Max number of frequencies
+const frequency_max = 10;
+
+// Constants to randomly set how many frequencies sound should have
+const numFrequencies1 = Math.floor(Math.random() * frequency_max);
+const numFrequencies2 = Math.floor(Math.random() * frequency_max);
 
 // Sends SQL update to vote count for chromosome
 function vote1()
 {
-  alert('vote1')
+  alert('Voted for sound 1!')
 }
 
 function vote2()
 {
-  alert('vote2')
+  alert('Voted for sound 2!')
 }
 
 // This needs to include randomization and hosting of the audio players on the web server
@@ -25,13 +29,12 @@ const Sig = () => {
     <AudioPlayers/>
   )
 };
-  
-  export default Sig;
-
+export default Sig;
 
 function AudioPlayers(props)
 {
-  var sound_1_fundamental = Math.floor(Math.random() * 500) + 220;
+  // Random values for testing
+  var sound_1_fundamental = Math.floor(Math.random() * 300) + 220;
   var sound_1_attack = Array(numFrequencies1 + 1).fill().map(() => Math.random() * (1.0).toFixed(4))
   var sound_1_decay = Array(numFrequencies1 + 1).fill().map(() => Math.random() * (1.0).toFixed(4))
   var sound_1_sustain = Array(numFrequencies1 + 1).fill().map(() => Math.random() * (0.25).toFixed(4))
@@ -62,7 +65,6 @@ function AudioPlayers(props)
   //     }
   //   })
   // }
-
   return (
       <div>
         <div>
@@ -92,31 +94,31 @@ function AudioPlayers(props)
         </div>
       </div>
   )
-
 }
 
+// Assign values and play
 function singleFrequency(poly, frequency, attack, decay, sustain, release, mul) {
   const now = Tone.now();
-
+  // Weird issue with sustain
   poly.set({
     "envelope" : {
-      "attack" : attack * mul,
-      "decay" : decay * mul,
+      "attack" : (attack * mul).toFixed(4),
+      "decay" : (decay * mul).toFixed(4),
       "sustain" : 0,
-      "release" : release * mul,
+      "release" : (release * mul).toFixed(4),
   }});
-  
+  console.log(sustain);
   poly.triggerAttackRelease([frequency], now + 1);
 }
 
 function synthesisInstrument(sound_id, fundamental, attack, decay, sustain, release, mul, numFrequencies) {
+  // Create synth and connect to recorder
   const poly = new Tone.PolySynth().toDestination();
   const recorder = new Tone.Recorder();
-
   poly.connect(recorder);
-
   recorder.start();
 
+  // Create n frequencies and pass their values
   for (let i = 0; i < numFrequencies + 1; i++) {
     singleFrequency(poly, fundamental * i+1, 
       attack[i], decay[i], sustain[i], release[i],
@@ -124,6 +126,7 @@ function synthesisInstrument(sound_id, fundamental, attack, decay, sustain, rele
       )
   }
 
+  // Once done recorded, setup download link
   setTimeout(async () => {
     const recording = await recorder.stop();
     console.log(recording);

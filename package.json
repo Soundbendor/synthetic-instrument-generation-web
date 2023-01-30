@@ -23,7 +23,7 @@
     "tone": "^14.7.77"
   },
   "scripts": {
-    "start": "react-scripts --openssl-legacy-provider start",
+    "start": "react-scripts start",
     "start-backend": "env/bin/flask run --no-debugger",
     "build": "react-scripts build",
     "eject": "react-scripts eject"
