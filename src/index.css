@@ -117,6 +117,19 @@ h1
     width: fit-content;
 }
 
+.downloadLink {
+    position: absolute;
+    margin-top: 20%;
+    right:30%;
+    background: none;
+    border: 0px;
+}
+
+.downloadLink:hover {
+    opacity: 50%;
+    transition: 1s ease-out;
+}
+
 .voteButton:hover
 {
     background-color: rgb(173, 173, 173);

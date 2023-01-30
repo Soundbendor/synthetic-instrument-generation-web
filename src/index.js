@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { NavLink, Link } from 'react-router-dom';
+import {NavLink} from 'react-router-dom';
 import {BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import {AnimatePresence, motion} from 'framer-motion/dist/framer-motion'
+import {AnimatePresence} from 'framer-motion/dist/framer-motion'
 
 import './index.css';
 import Home from "./Home";

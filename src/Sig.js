@@ -1,17 +1,11 @@
 import React from 'react';
-import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
-import axios from "axios";
 import bird from "./bird.webm"
 import * as Tone from 'tone'
-import {AnimatePresence, motion} from 'framer-motion/dist/framer-motion'
+import {motion} from 'framer-motion/dist/framer-motion'
 
 const numFrequencies1 = Math.floor(Math.random() * 10);
 const numFrequencies2 = Math.floor(Math.random() * 10);
-
-function getRandomInt(max) {
-  return Math.floor(Math.random() * max);
-}
 
 // Sends SQL update to vote count for chromosome
 function vote1()
@@ -26,7 +20,7 @@ function vote2()
 
 // This needs to include randomization and hosting of the audio players on the web server
 const Sig = () => {
-
+  console.clear();
   return (
     <AudioPlayers/>
   )
@@ -34,41 +28,40 @@ const Sig = () => {
   
   export default Sig;
 
+
 function AudioPlayers(props)
 {
-  const [sounds, setSounds] = React.useState(null)
-
   var sound_1_fundamental = Math.floor(Math.random() * 500) + 220;
-  var sound_1_attack = Array(11).fill().map(() => Math.random() * (1.0).toFixed(4))
-  var sound_1_decay = Array(11).fill().map(() => Math.random() * (1.0).toFixed(4))
-  var sound_1_sustain = Array(11).fill().map(() => Math.random() * (0.25).toFixed(4))
-  var sound_1_release = Array(11).fill().map(() => (Math.random() * (1.0).toFixed(4)) * 0.5)
-  var sound_1_amplitude = Array(11).fill().map(() => Math.random() * (1.0).toFixed(4))
+  var sound_1_attack = Array(numFrequencies1 + 1).fill().map(() => Math.random() * (1.0).toFixed(4))
+  var sound_1_decay = Array(numFrequencies1 + 1).fill().map(() => Math.random() * (1.0).toFixed(4))
+  var sound_1_sustain = Array(numFrequencies1 + 1).fill().map(() => Math.random() * (0.25).toFixed(4))
+  var sound_1_release = Array(numFrequencies1 + 1).fill().map(() => (Math.random() * (1.0).toFixed(4)) * 0.5)
+  var sound_1_amplitude = Array(numFrequencies1 + 1).fill().map(() => Math.random() * (1.0).toFixed(4))
   var sound_2_fundamental = Math.floor(Math.random() * 500) + 220;
-  var sound_2_attack = Array(11).fill().map(() => Math.random() * (1.0).toFixed(4))
-  var sound_2_decay = Array(11).fill().map(() => Math.random() * (1.0).toFixed(4))
-  var sound_2_sustain = Array(11).fill().map(() => Math.random() * (0.25).toFixed(4))
-  var sound_2_release = Array(11).fill().map(() => (Math.random() * (1.0).toFixed(4)) * 0.5)
-  var sound_2_amplitude = Array(11).fill().map(() => Math.random() * (1.0).toFixed(4))
+  var sound_2_attack = Array(numFrequencies2 + 1).fill().map(() => Math.random() * (1.0).toFixed(4))
+  var sound_2_decay = Array(numFrequencies2 + 1).fill().map(() => Math.random() * (1.0).toFixed(4))
+  var sound_2_sustain = Array(numFrequencies2 + 1).fill().map(() => Math.random() * (0.25).toFixed(4))
+  var sound_2_release = Array(numFrequencies2 + 1).fill().map(() => (Math.random() * (1.0).toFixed(4)) * 0.5)
+  var sound_2_amplitude = Array(numFrequencies2 + 1).fill().map(() => Math.random() * (1.0).toFixed(4))
 
-  function getData() {
-    axios({
-      method: "GET",
-      url:"/sound_generation",
-    })
-    .then((response) => {
-      const res =response.data
-      setSounds(({
-        sound_1: res.sound_1,
-        sound_2: res.sound_2}))
-    }).catch((error) => {
-      if (error.response) {
-        console.log(error.response)
-        console.log(error.response.status)
-        console.log(error.response.headers)
-      }
-    })
-  }
+  // function getData() {
+  //   axios({
+  //     method: "GET",
+  //     url:"/sound_generation",
+  //   })
+  //   .then((response) => {
+  //     const res =response.data
+  //     setSounds(({
+  //       sound_1: res.sound_1,
+  //       sound_2: res.sound_2}))
+  //   }).catch((error) => {
+  //     if (error.response) {
+  //       console.log(error.response)
+  //       console.log(error.response.status)
+  //       console.log(error.response.headers)
+  //     }
+  //   })
+  // }
 
   return (
       <div>
@@ -83,29 +76,28 @@ function AudioPlayers(props)
               <source src={bird} type="video/webm"/>
             Your browser does not support the video tag.
             </video>
-            <button className = "voteButton" onClick={() => {synthesisInstrument(sound_1_fundamental, sound_1_attack, sound_1_decay, sound_1_sustain, sound_1_release, sound_1_amplitude, numFrequencies1)}}>Play Sound 1</button>
+            <button className = "voteButton" onClick={() => {synthesisInstrument(1, sound_1_fundamental, sound_1_attack, sound_1_decay, sound_1_sustain, sound_1_release, sound_1_amplitude, numFrequencies1)}}>Play Sound 1</button>
             <button className = "voteButton" onClick={vote1}>Vote 1</button>
+            <a href = 'google.com' className = "downloadLink" id = "downloadLink1"> </a>
           </div>
           <div className = "voteBox, horizontal-center">
           <video className = "videoPlayer" width="320" height="240" autoPlay muted>
             <source src={bird} type="video/webm"/>
           Your browser does not support the video tag.
           </video>
-            <button className = "voteButton" onClick={() => {synthesisInstrument(sound_2_fundamental, sound_2_attack, sound_2_decay, sound_2_sustain, sound_2_release, sound_2_amplitude, numFrequencies2 )}}>Play Sound 2</button>
+            <button className = "voteButton" onClick={() => {synthesisInstrument(2, sound_2_fundamental, sound_2_attack, sound_2_decay, sound_2_sustain, sound_2_release, sound_2_amplitude, numFrequencies2 )}}>Play Sound 2</button>
             <button className = "voteButton" onClick={vote2}>Vote 2</button>
+            <a href = 'google.com' className = "downloadLink" id = "downloadLink2"> </a>
           </div>
-          {/* {sounds && <div>
-            <p>Sound_1: {sounds.sound_1}</p>
-            <p>Sound_2: {sounds.sound_2}</p>
-          </div>
-          } */}
         </div>
       </div>
   )
+
 }
 
-function singleFrequency(frequency, attack, decay, sustain, release, mul) {
-  const poly = new Tone.PolySynth(Tone.Synth).toDestination();
+function singleFrequency(poly, frequency, attack, decay, sustain, release, mul) {
+  const now = Tone.now();
+
   poly.set({
     "envelope" : {
       "attack" : attack * mul,
@@ -114,15 +106,40 @@ function singleFrequency(frequency, attack, decay, sustain, release, mul) {
       "release" : release * mul,
   }});
   
-  poly.triggerAttackRelease([frequency]);
-
+  poly.triggerAttackRelease([frequency], now + 1);
 }
 
-function synthesisInstrument(fundamental, attack, decay, sustain, release, mul, numFrequencies) {
+function synthesisInstrument(sound_id, fundamental, attack, decay, sustain, release, mul, numFrequencies) {
+  const poly = new Tone.PolySynth().toDestination();
+  const recorder = new Tone.Recorder();
+
+  poly.connect(recorder);
+
+  recorder.start();
+
   for (let i = 0; i < numFrequencies + 1; i++) {
-    singleFrequency(fundamental * i+1, 
+    singleFrequency(poly, fundamental * i+1, 
       attack[i], decay[i], sustain[i], release[i],
       mul[i]
       )
   }
+
+  setTimeout(async () => {
+    const recording = await recorder.stop();
+    console.log(recording);
+    const url = URL.createObjectURL(recording);
+    if (sound_id === 1) {
+      const anchor = document.querySelector("#downloadLink1");
+      anchor.download = "sound_1.webm";
+      anchor.href = url;
+      anchor.innerHTML = "Download now!";
+    }
+    else {
+      const anchor = document.querySelector("#downloadLink2");
+      anchor.download = "sound_2.webm";
+      anchor.type = "audio/webm"
+      anchor.href = url;
+      anchor.innerHTML = "Download now!";
+    }
+  }, 6000);
 }
