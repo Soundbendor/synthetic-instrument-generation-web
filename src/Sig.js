@@ -3,6 +3,7 @@ import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
 import axios from "axios";
 import bird from "./bird.webm"
+import * as Tone from 'tone'
 import {AnimatePresence, motion} from 'framer-motion/dist/framer-motion'
 
 //import Animal from "react-animals";
@@ -47,7 +48,7 @@ function AudioPlayers(props)
         console.log(error.response)
         console.log(error.response.status)
         console.log(error.response.headers)
-        }
+      }
     })
   }
 
@@ -92,7 +93,82 @@ function AudioPlayers(props)
           </div>
           }
         </div>
-
+          <SynthesisInstrument/>
       </div>
   )
+}
+
+
+
+
+function SynthesisInstrument(props) {
+  // var ampEnv = new Tone.AmplitudeEnvelope({
+  //   "attack": 1.0,
+  //   "decay": 0.2,
+  //   "sustain": 0.0,
+  //   "release": 5.0
+  // }).toDestination();
+
+  const poly = new Tone.PolySynth(Tone.Synth).toDestination();
+  const poly2 = new Tone.PolySynth(Tone.Synth).toDestination();
+
+  poly.set({
+    "envelope" : {
+      "attack" : 0.1
+    }
+  });
+
+  poly.set({
+    "envelope" : {
+      "decay" : 1
+    }
+  });
+
+  poly.set({
+    "envelope" : {
+      "sustain" : 1.0
+    }
+  });
+
+  poly.set({
+    "envelope" : {
+      "release" : 25.0
+    }
+  });
+
+  poly2.set({
+    "envelope" : {
+      "attack" : 0.1
+    }
+  });
+
+  poly2.set({
+    "envelope" : {
+      "decay" : 1
+    }
+  });
+
+  poly2.set({
+    "envelope" : {
+      "sustain" : 0.5
+    }
+  });
+
+  poly2.set({
+    "envelope" : {
+      "release" : 100.0
+    }
+  });
+
+  poly.triggerAttackRelease([1100]);
+  poly2.triggerAttackRelease([220]);
+  poly2.triggerAttackRelease([330]);
+  poly2.triggerAttackRelease([440]);
+
+  // for (let i = 0; i < 8; i++) {
+  //   const osc = new Tone.Oscillator(i * 330, "sine").connect(ampEnv).start();
+  //   ampEnv.triggerAttackRelease(now)
+  // }
+	// trigger the envelopes attack and release "8t" apart
+	//ampEnv.triggerAttackRelease("8t");
 }
