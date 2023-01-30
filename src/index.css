@@ -111,7 +111,8 @@ h1
     margin-left: 1%;
     -ms-transform: translateY(-50%);
     transform: translateY(-50%);
-    float: right;
+    float: center;
+    left:30%;
     position: relative;
     width: fit-content;
 }

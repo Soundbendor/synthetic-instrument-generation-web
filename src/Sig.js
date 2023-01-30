@@ -6,18 +6,20 @@ import bird from "./bird.webm"
 import * as Tone from 'tone'
 import {AnimatePresence, motion} from 'framer-motion/dist/framer-motion'
 
+const numFrequencies = 10;
+
 //import Animal from "react-animals";
 //import AWS from 'aws-sdk'
 
 // Sends SQL update to vote count for chromosome
 function vote1()
 {
-    alert('vote1')
+  alert('vote1')
 }
 
 function vote2()
 {
-    alert('vote2')
+  alert('vote2')
 }
 
 // This needs to include randomization and hosting of the audio players on the web server
@@ -65,27 +67,16 @@ function AudioPlayers(props)
               <source src={bird} type="video/webm"/>
             Your browser does not support the video tag.
             </video>
-              <AudioPlayer className = "audioPlayer"
-                src={"https://cdn.freesound.org/previews/321/321029_5123851-lq.mp3"}
-                onPlay={e => console.log("onPlay")}
-                customAdditionalControls = {[]}
-                showJumpControls={false}
-              />
-
-            <button className = "voteButton" onClick = {getData}>Vote 1</button>
+            <button className = "voteButton" onClick={() => {synthesisInstrument(220)}}>Play Sound 1</button>
+            <button className = "voteButton" onClick={vote1}>Vote 1</button>
           </div>
           <div className = "voteBox, horizontal-center">
           <video className = "videoPlayer" width="320" height="240" autoPlay muted>
             <source src={bird} type="video/webm"/>
           Your browser does not support the video tag.
           </video>
-          <AudioPlayer
-              src={"https://cdn.freesound.org/previews/321/321029_5123851-lq.mp3"}
-              onPlay={e => console.log("onPlay")}
-              customAdditionalControls = {[]}
-              showJumpControls={false}
-            />
-              <button className = "voteButton" onClick = {vote2}>Vote 2</button>
+            <button className = "voteButton" onClick={() => {synthesisInstrument(330)}}>Play Sound 2</button>
+            <button className = "voteButton" onClick={vote2}>Vote 2</button>
           </div>
           {sounds && <div>
             <p>Sound_1: {sounds.sound_1}</p>
@@ -93,82 +84,24 @@ function AudioPlayers(props)
           </div>
           }
         </div>
-          <SynthesisInstrument/>
       </div>
   )
 }
 
-
-
-
-function SynthesisInstrument(props) {
-  // var ampEnv = new Tone.AmplitudeEnvelope({
-  //   "attack": 1.0,
-  //   "decay": 0.2,
-  //   "sustain": 0.0,
-  //   "release": 5.0
-  // }).toDestination();
-
+function singleFrequency(frequency, attack, decay, sustain, release) {
   const poly = new Tone.PolySynth(Tone.Synth).toDestination();
-  const poly2 = new Tone.PolySynth(Tone.Synth).toDestination();
-
   poly.set({
     "envelope" : {
-      "attack" : 0.1
-    }
-  });
+      "attack" : attack,
+      "decay" : decay,
+      "sustain" : sustain,
+      "release" : release
+  }});
+  poly.triggerAttackRelease([frequency]);
+}
 
-  poly.set({
-    "envelope" : {
-      "decay" : 1
-    }
-  });
-
-  poly.set({
-    "envelope" : {
-      "sustain" : 1.0
-    }
-  });
-
-  poly.set({
-    "envelope" : {
-      "release" : 25.0
-    }
-  });
-
-  poly2.set({
-    "envelope" : {
-      "attack" : 0.1
-    }
-  });
-
-  poly2.set({
-    "envelope" : {
-      "decay" : 1
-    }
-  });
-
-  poly2.set({
-    "envelope" : {
-      "sustain" : 0.5
-    }
-  });
-
-  poly2.set({
-    "envelope" : {
-      "release" : 100.0
-    }
-  });
-
-  poly.triggerAttackRelease([1100]);
-  poly2.triggerAttackRelease([220]);
-  poly2.triggerAttackRelease([330]);
-  poly2.triggerAttackRelease([440]);
-
-  // for (let i = 0; i < 8; i++) {
-  //   const osc = new Tone.Oscillator(i * 330, "sine").connect(ampEnv).start();
-  //   ampEnv.triggerAttackRelease(now)
-  // }
-	// trigger the envelopes attack and release "8t" apart
-	//ampEnv.triggerAttackRelease("8t");
+function synthesisInstrument(fundamental) {
+  for (let i = 1; i < numFrequencies + 1; i++) {
+    singleFrequency(fundamental * i, 0.1, 1.0, 0, 25)
+  }
 }
