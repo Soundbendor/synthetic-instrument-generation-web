@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import {NavLink} from 'react-router-dom';
 import {BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import {AnimatePresence} from 'framer-motion/dist/framer-motion'
+import {CookiesProvider } from 'react-cookie';
 
 import './index.css';
 import Home from "./Home";
@@ -23,18 +24,20 @@ function Header()
 function App () 
 {
     return (
-        <AnimatePresence>
-            <Router>
-                <div className = "App">
-                    <Header />
-                    <Routes>
-                        <Route exact path = "/" element = {<Home/>} />
-                        <Route path = "/About" element = {<About/>} />
-                        <Route path = "/Sig" element = {<Sig/>} />
-                    </Routes>
-                </div>
-            </Router>
-        </AnimatePresence>
+        <CookiesProvider>
+            <AnimatePresence>
+                <Router>
+                    <div className = "App">
+                        <Header />
+                        <Routes>
+                            <Route exact path = "/" element = {<Home/>} />
+                            <Route path = "/About" element = {<About/>} />
+                            <Route path = "/Sig" element = {<Sig/>} />
+                        </Routes>
+                    </div>
+                </Router>
+            </AnimatePresence>
+        </CookiesProvider>
     )
 }
 

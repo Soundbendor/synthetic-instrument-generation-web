@@ -3,6 +3,7 @@ import 'react-h5-audio-player/lib/styles.css';
 import bird from "./bird.webm"
 import * as Tone from 'tone'
 import {motion} from 'framer-motion/dist/framer-motion'
+import {useCookies} from 'react-cookie';
 
 // Max number of frequencies
 const frequency_max = 10;
@@ -11,19 +12,9 @@ const frequency_max = 10;
 const numFrequencies1 = Math.floor(Math.random() * frequency_max);
 const numFrequencies2 = Math.floor(Math.random() * frequency_max);
 
-// Sends SQL update to vote count for chromosome
-function vote1()
-{
-  alert('Voted for sound 1!')
-}
-
-function vote2()
-{
-  alert('Voted for sound 2!')
-}
-
 // This needs to include randomization and hosting of the audio players on the web server
 const Sig = () => {
+
   console.clear();
   return (
     <AudioPlayers/>
@@ -33,6 +24,48 @@ export default Sig;
 
 function AudioPlayers(props)
 {
+  const [cookies, setCookie] = useCookies();
+
+  // Sends SQL update to vote count for chromosome
+  // Run a python script example
+  async function vote1() {
+    let pyodide = await window.loadPyodide();
+    // Pyodide is now ready to use...
+    let output = pyodide.runPython(`
+      def hello_world():
+        return "Voted for sound 1!"
+      hello_world()
+    `);
+
+    if ((Number(cookies.votes) + 1) >= 10) {
+      setCookie('votes', 0);
+    }
+    else {
+      setCookie('votes', (Number(cookies.votes) + 1).toString());
+    }
+    console.log((Number(cookies.votes) + 1).toString());
+    console.log(output)
+  }
+
+  async function vote2() {
+    let pyodide = await window.loadPyodide();
+    // Pyodide is now ready to use...
+    let output = pyodide.runPython(`
+      def hello_world():
+        return "Voted for sound 2!"
+      hello_world()
+    `);
+
+    if ((Number(cookies.votes) + 1) >= 10) {
+      setCookie('votes', 0);
+    }
+    else {
+      setCookie('votes', (Number(cookies.votes) + 1).toString());
+    }
+    console.log((Number(cookies.votes) + 1).toString());
+    console.log(output)
+  }
+
   // Random values for testing
   var sound_1_fundamental = Math.floor(Math.random() * 300) + 220;
   var sound_1_attack = Array(numFrequencies1 + 1).fill().map(() => Math.random() * (1.0).toFixed(4))
@@ -107,7 +140,6 @@ function singleFrequency(poly, frequency, attack, decay, sustain, release, mul) 
       "sustain" : 0,
       "release" : (release * mul).toFixed(4),
   }});
-  console.log(sustain);
   poly.triggerAttackRelease([frequency], now + 1);
 }
 
@@ -128,8 +160,8 @@ function synthesisInstrument(sound_id, fundamental, attack, decay, sustain, rele
 
   // Once done recorded, setup download link
   setTimeout(async () => {
+
     const recording = await recorder.stop();
-    console.log(recording);
     const url = URL.createObjectURL(recording);
     if (sound_id === 1) {
       const anchor = document.querySelector("#downloadLink1");
@@ -144,5 +176,5 @@ function synthesisInstrument(sound_id, fundamental, attack, decay, sustain, rele
       anchor.href = url;
       anchor.innerHTML = "Download now!";
     }
-  }, 6000);
+  }, 4000);
 }
