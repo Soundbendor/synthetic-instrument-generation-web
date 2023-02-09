@@ -1,5 +1,7 @@
 To host website using React install flask & run these commands to install used packages.
 
+# Currently Outdated
+
 # React:
 
 ``` npm install ```
