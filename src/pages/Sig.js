@@ -1,103 +1,102 @@
 import React from 'react';
 import 'react-h5-audio-player/lib/styles.css';
-import bird from "./bird.webm"
 import * as Tone from 'tone'
 import {motion} from 'framer-motion/dist/framer-motion'
 import {useCookies} from 'react-cookie';
+import axios from 'axios';
+
+import bird from "../video/bird.webm"
 
 // Max number of frequencies
 const frequency_max = 10;
+
+let instrument_1 = {}
+let instrument_2 = {}
 
 // Constants to randomly set how many frequencies sound should have
 const numFrequencies1 = Math.floor(Math.random() * frequency_max);
 const numFrequencies2 = Math.floor(Math.random() * frequency_max);
 
+const chromosomeID_1 = 8;
+const chromosomeID_2 = 8;
+
 // This needs to include randomization and hosting of the audio players on the web server
 const Sig = () => {
-
   console.clear();
   return (
     <AudioPlayers/>
   )
 };
+
 export default Sig;
 
 function AudioPlayers(props)
 {
   const [cookies, setCookie] = useCookies();
 
+  getInstrument_1(chromosomeID_1)
+  getInstrument_2(chromosomeID_2)
+  
   // Sends SQL update to vote count for chromosome
   // Run a python script example
   async function vote1() {
-    let pyodide = await window.loadPyodide();
-    // Pyodide is now ready to use...
-    let output = pyodide.runPython(`
-      def hello_world():
-        return "Voted for sound 1!"
-      hello_world()
-    `);
-
     if ((Number(cookies.votes) + 1) >= 10) {
       setCookie('votes', 0);
     }
     else {
       setCookie('votes', (Number(cookies.votes) + 1).toString());
     }
-    console.log((Number(cookies.votes) + 1).toString());
-    console.log(output)
+    console.log(instrument_1)
   }
 
   async function vote2() {
-    let pyodide = await window.loadPyodide();
-    // Pyodide is now ready to use...
-    let output = pyodide.runPython(`
-      def hello_world():
-        return "Voted for sound 2!"
-      hello_world()
-    `);
-
     if ((Number(cookies.votes) + 1) >= 10) {
       setCookie('votes', 0);
     }
     else {
       setCookie('votes', (Number(cookies.votes) + 1).toString());
     }
-    console.log((Number(cookies.votes) + 1).toString());
-    console.log(output)
+    console.log(instrument_2)
   }
 
-  // Random values for testing
-  var sound_1_fundamental = Math.floor(Math.random() * 300) + 220;
-  var sound_1_attack = Array(numFrequencies1 + 1).fill().map(() => Math.random() * (1.0).toFixed(4))
-  var sound_1_decay = Array(numFrequencies1 + 1).fill().map(() => Math.random() * (1.0).toFixed(4))
-  var sound_1_sustain = Array(numFrequencies1 + 1).fill().map(() => Math.random() * (0.25).toFixed(4))
-  var sound_1_release = Array(numFrequencies1 + 1).fill().map(() => (Math.random() * (1.0).toFixed(4)) * 0.5)
-  var sound_1_amplitude = Array(numFrequencies1 + 1).fill().map(() => Math.random() * (1.0).toFixed(4))
-  var sound_2_fundamental = Math.floor(Math.random() * 500) + 220;
-  var sound_2_attack = Array(numFrequencies2 + 1).fill().map(() => Math.random() * (1.0).toFixed(4))
-  var sound_2_decay = Array(numFrequencies2 + 1).fill().map(() => Math.random() * (1.0).toFixed(4))
-  var sound_2_sustain = Array(numFrequencies2 + 1).fill().map(() => Math.random() * (0.25).toFixed(4))
-  var sound_2_release = Array(numFrequencies2 + 1).fill().map(() => (Math.random() * (1.0).toFixed(4)) * 0.5)
-  var sound_2_amplitude = Array(numFrequencies2 + 1).fill().map(() => Math.random() * (1.0).toFixed(4))
+  // Function to get sounds
+  function getInstrument_1(chromosomeID) {
+    return axios({
+      method: "GET",
+      url:"/retrieve_member",
+      params: {chromosomeID}
+    })
+    .then((response) => {
+      const res = response.data
+      instrument_1 = res
+    }).catch((error) => {
+      if (error.response) {
+        console.log(error.response)
+        console.log(error.response.status)
+        console.log(error.response.headers)
+      }
+    })
+  }
 
-  // function getData() {
-  //   axios({
-  //     method: "GET",
-  //     url:"/sound_generation",
-  //   })
-  //   .then((response) => {
-  //     const res =response.data
-  //     setSounds(({
-  //       sound_1: res.sound_1,
-  //       sound_2: res.sound_2}))
-  //   }).catch((error) => {
-  //     if (error.response) {
-  //       console.log(error.response)
-  //       console.log(error.response.status)
-  //       console.log(error.response.headers)
-  //     }
-  //   })
-  // }
+    // Function to get sounds
+    function getInstrument_2(chromosomeID) {
+      return axios({
+        method: "GET",
+        url:"/retrieve_member",
+        params: {chromosomeID}
+      })
+      .then((response) => {
+        const res = response.data
+        instrument_2 = res
+      }).catch((error) => {
+        if (error.response) {
+          console.log(error.response)
+          console.log(error.response.status)
+          console.log(error.response.headers)
+        }
+      })
+    }
+
   return (
       <div>
         <div>
@@ -111,7 +110,9 @@ function AudioPlayers(props)
               <source src={bird} type="video/webm"/>
             Your browser does not support the video tag.
             </video>
-            <button className = "voteButton" onClick={() => {synthesisInstrument(1, sound_1_fundamental, sound_1_attack, sound_1_decay, sound_1_sustain, sound_1_release, sound_1_amplitude, numFrequencies1)}}>Play Sound 1</button>
+            <button className = "voteButton" onClick={() => {
+              synthesisInstrument(1, instrument_1.harms, instrument_1.attacks, instrument_1.decays, instrument_1.sustains, instrument_1.releases, instrument_1.amps, numFrequencies1)
+              }}>Play Sound 1</button>
             <button className = "voteButton" onClick={vote1}>Vote 1</button>
             <a href = 'google.com' className = "downloadLink" id = "downloadLink1"> </a>
           </div>
@@ -120,7 +121,7 @@ function AudioPlayers(props)
             <source src={bird} type="video/webm"/>
           Your browser does not support the video tag.
           </video>
-            <button className = "voteButton" onClick={() => {synthesisInstrument(2, sound_2_fundamental, sound_2_attack, sound_2_decay, sound_2_sustain, sound_2_release, sound_2_amplitude, numFrequencies2 )}}>Play Sound 2</button>
+            <button className = "voteButton" onClick={() => {synthesisInstrument(2, instrument_2.harms, instrument_2.attacks, instrument_2.decays, instrument_2.sustains, instrument_2.releases, instrument_2.amps, numFrequencies2 )}}>Play Sound 2</button>
             <button className = "voteButton" onClick={vote2}>Vote 2</button>
             <a href = 'google.com' className = "downloadLink" id = "downloadLink2"> </a>
           </div>
@@ -131,19 +132,18 @@ function AudioPlayers(props)
 
 // Assign values and play
 function singleFrequency(poly, frequency, attack, decay, sustain, release, mul) {
-  const now = Tone.now();
   // Weird issue with sustain
-  poly.set({
-    "envelope" : {
-      "attack" : (attack * mul).toFixed(4),
-      "decay" : (decay * mul).toFixed(4),
-      "sustain" : 0,
-      "release" : (release * mul).toFixed(4),
-  }});
-  poly.triggerAttackRelease([frequency], now + 1);
+  var ampEnv = new Tone.AmplitudeEnvelope({
+    "attack": (attack * mul),
+    "decay": (decay * mul),
+    "sustain": (sustain * mul),
+    "release": (release * mul),
+  }).toDestination();
+  poly.connect(ampEnv)
+  poly.triggerAttackRelease([frequency], 0.1);
 }
 
-function synthesisInstrument(sound_id, fundamental, attack, decay, sustain, release, mul, numFrequencies) {
+function synthesisInstrument(sound_id, harms, attack, decay, sustain, release, mul, numFrequencies) {
   // Create synth and connect to recorder
   const poly = new Tone.PolySynth().toDestination();
   const recorder = new Tone.Recorder();
@@ -152,7 +152,7 @@ function synthesisInstrument(sound_id, fundamental, attack, decay, sustain, rele
 
   // Create n frequencies and pass their values
   for (let i = 0; i < numFrequencies + 1; i++) {
-    singleFrequency(poly, fundamental * i+1, 
+    singleFrequency(poly, harms[i], 
       attack[i], decay[i], sustain[i], release[i],
       mul[i]
       )
