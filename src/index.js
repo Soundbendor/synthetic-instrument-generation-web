@@ -1,13 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { NavLink, Link } from 'react-router-dom';
+import {NavLink} from 'react-router-dom';
 import {BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import {AnimatePresence, motion} from 'framer-motion/dist/framer-motion'
+import {AnimatePresence} from 'framer-motion/dist/framer-motion'
+import {CookiesProvider } from 'react-cookie';
 
-import './index.css';
-import Home from "./Home";
-import Sig from "./Sig";
-import About from "./About";
+import './styles/index.css';
+import Home from "./pages/Home";
+import Sig from "./pages/Sig";
+import About from "./pages/About";
 
 function Header() 
 {
@@ -23,18 +24,20 @@ function Header()
 function App () 
 {
     return (
-        <AnimatePresence>
-            <Router>
-                <div className = "App">
-                    <Header />
-                    <Routes>
-                        <Route exact path = "/" element = {<Home/>} />
-                        <Route path = "/About" element = {<About/>} />
-                        <Route path = "/Sig" element = {<Sig/>} />
-                    </Routes>
-                </div>
-            </Router>
-        </AnimatePresence>
+        <CookiesProvider>
+            <AnimatePresence>
+                <Router>
+                    <div className = "App">
+                        <Header />
+                        <Routes>
+                            <Route exact path = "/" element = {<Home/>} />
+                            <Route path = "/About" element = {<About/>} />
+                            <Route path = "/Sig" element = {<Sig/>} />
+                        </Routes>
+                    </div>
+                </Router>
+            </AnimatePresence>
+        </CookiesProvider>
     )
 }
 

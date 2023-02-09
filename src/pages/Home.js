@@ -1,5 +1,5 @@
 import React from 'react';
-import {AnimatePresence, motion} from 'framer-motion/dist/framer-motion'
+import {motion} from 'framer-motion/dist/framer-motion'
 
 const Home = () => {
     return (

@@ -1094,3 +1094,4 @@ venv/Scripts/python.exe
 venv/Scripts/pythonw.exe
 src/.flaskenv
 src/clapp.wav
+package.json

@@ -1,7 +1,7 @@
 
 @font-face {
     font-family: "vcr";
-    src: url("VCR_OSD_MONO_1.ttf");
+    src: url("../fonts/VCR_OSD_MONO_1.ttf");
     }
 
 html * {
@@ -111,9 +111,23 @@ h1
     margin-left: 1%;
     -ms-transform: translateY(-50%);
     transform: translateY(-50%);
-    float: right;
+    float: center;
+    left:30%;
     position: relative;
     width: fit-content;
+}
+
+.downloadLink {
+    position: absolute;
+    margin-top: 20%;
+    right:30%;
+    background: none;
+    border: 0px;
+}
+
+.downloadLink:hover {
+    opacity: 50%;
+    transition: 1s ease-out;
 }
 
 .voteButton:hover
