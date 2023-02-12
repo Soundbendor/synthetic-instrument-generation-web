@@ -14,6 +14,9 @@ let instrument_1 = {}
 let instrument_2 = {}
 
 // Constants to randomly set how many frequencies sound should have
+
+// This is causing issues and unnecessary, I should simply grab this from the GA and count
+// The amount of harms to determine how long
 const numFrequencies1 = Math.floor(Math.random() * frequency_max);
 const numFrequencies2 = Math.floor(Math.random() * frequency_max);
 
@@ -132,15 +135,17 @@ function AudioPlayers(props)
 
 // Assign values and play
 function singleFrequency(poly, frequency, attack, decay, sustain, release, mul) {
-  // Weird issue with sustain
-  var ampEnv = new Tone.AmplitudeEnvelope({
-    "attack": (attack * mul),
-    "decay": (decay * mul),
-    "sustain": (sustain * mul),
-    "release": (release * mul),
-  }).toDestination();
-  poly.connect(ampEnv)
-  poly.triggerAttackRelease([frequency], 0.1);
+  const now = Tone.now()
+  poly.set({
+    "envelope" : {
+      "attack": attack,
+      "decay": decay,
+      "sustain": sustain,
+      "release": release
+    }
+  })
+  console.log(mul)
+  poly.triggerAttackRelease(frequency, now, mul);
 }
 
 function synthesisInstrument(sound_id, harms, attack, decay, sustain, release, mul, numFrequencies) {
@@ -152,10 +157,16 @@ function synthesisInstrument(sound_id, harms, attack, decay, sustain, release, m
 
   // Create n frequencies and pass their values
   for (let i = 0; i < numFrequencies + 1; i++) {
-    singleFrequency(poly, harms[i], 
-      attack[i], decay[i], sustain[i], release[i],
+    console.log(numFrequencies)
+    singleFrequency(
+      poly, 
+      harms[i], 
+      attack[i], 
+      decay[i], 
+      sustain[i], 
+      release[i],
       mul[i]
-      )
+    )
   }
 
   // Once done recorded, setup download link
