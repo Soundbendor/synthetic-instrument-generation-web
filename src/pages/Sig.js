@@ -22,7 +22,7 @@ let instrument_2 = {}
 // const numFrequencies1 = Math.floor(Math.random() * frequency_max);
 // const numFrequencies2 = Math.floor(Math.random() * frequency_max);
 
-const chromosomeID_1 = 28;
+const chromosomeID_1 = 8;
 const chromosomeID_2 = 28;
 
 // This needs to include randomization and hosting of the audio players on the web server
@@ -45,15 +45,19 @@ function AudioPlayers()
   // Sends SQL update to vote count for chromosome
   // Run a python script example
   // Need to make a lot of changes to this to make it work
-  async function vote1(chromosomeID) {
+  async function vote1(chromosomeID, ipTest, locationTest) {
     axios({
       method: "GET",
       url:"/vote",
-      params: {chromosomeID}
+      params: {chromosomeID, ipTest, locationTest}
     })
     .then((response) => {
+      const res = response.data
     }).catch((error) => {
       if (error.response) {
+        console.log(error.response)
+        console.log(error.response.status)
+        console.log(error.response.headers)
       }
     })
     if ((Number(cookies.votes) + 1) >= 10) {
@@ -65,7 +69,21 @@ function AudioPlayers()
     console.log(instrument_1)
   }
 
-  async function vote2(chromosomeID) {
+  async function vote2(chromosomeID, ipTest, locationTest) {
+    axios({
+      method: "GET",
+      url:"/vote",
+      params: {chromosomeID, ipTest, locationTest}
+    })
+    .then((response) => {
+      const res = response.data
+    }).catch((error) => {
+      if (error.response) {
+        console.log(error.response)
+        console.log(error.response.status)
+        console.log(error.response.headers)
+      }
+    })
     if ((Number(cookies.votes) + 1) >= 10) {
       setCookie('votes', 0);
     }
@@ -149,7 +167,6 @@ function AudioPlayers()
 // Assign values and play
 function singleFrequency(poly, frequency, attack, decay, sustain, release, mul) {
   const now = Tone.now()
-  console.log("Test")
   poly.set({
     "envelope" : {
       "attack": attack,

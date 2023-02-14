@@ -3,6 +3,7 @@ from pyo import *
 import pymysql
 import os
 import numpy
+from datetime import datetime
 
 # List of global constants
 
@@ -433,16 +434,15 @@ def retrieve_member():
 def vote():
     # Finds a member given their chromosome ID then returns the harmonics, amplitudes and adsr values of that member
     chromosomeID = request.args.get('chromosomeID')
+    ipTest = request.args.get('ipTest')
+    locationTest = request.args.get('locationTest')
     # Gets the geneID with the corresponding chromosomeID
-    sql = "SELECT `geneID` FROM `genes` WHERE `chromosomeID` = %s"
-    cursor.execute(sql, (chromosomeID))
-    result = cursor.fetchone()
-    geneID = str(result[0])
-
-
-    # The input in sql query needs to be a string, not an int
-    sql = "SELECT `value` FROM `harmonics` WHERE `geneID` =%s"
-    cursor.execute(sql, (geneID))
+    sql = """INSERT INTO `votes` 
+            (winnerID, location, timestamp, IP)
+            VALUES (%s, %s, %s, %s)
+        """
+    cursor.execute(sql, (chromosomeID, locationTest, datetime.now(), ipTest))
+    return "Success"
     
 
 if __name__ == '__main__':
