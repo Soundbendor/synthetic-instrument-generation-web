@@ -66,12 +66,7 @@ num_isles = 20
 
 api = Flask(__name__)
 
-db = pymysql.connect(host = 'sigdb.cmnz4advdpzd.us-west-2.rds.amazonaws.com',
-                user = 'admin',
-                password = 'Beaver!1',
-                database = 'sig')
 
-cursor = db.cursor()
 
 class GA:
     # Stores the harms, amps, adsr env, weights, and base freq if applicable
@@ -313,6 +308,13 @@ class GA:
 # Either do a random query on 2 sounds, or gain this from the GA
 @api.route('/retrieve_member')
 def retrieve_member():
+    db = pymysql.connect(host = 'sigdb.cmnz4advdpzd.us-west-2.rds.amazonaws.com',
+                user = 'admin',
+                password = 'Beaver!1',
+                database = 'sig')
+
+    cursor = db.cursor()
+
     # Finds a member given their chromosome ID then returns the harmonics, amplitudes and adsr values of that member
     chromosomeID = request.args.get('chromosomeID')
     # Gets the geneID with the corresponding chromosomeID
@@ -428,20 +430,22 @@ def retrieve_member():
         "parent1": parent1,
         "parent2": parent2
     }
+
+    cursor.close()
     return instrument
 
 @api.route('/vote')
 def vote():
     # Finds a member given their chromosome ID then returns the harmonics, amplitudes and adsr values of that member
     chromosomeID = request.args.get('chromosomeID')
-    ipTest = request.args.get('ipTest')
-    locationTest = request.args.get('locationTest')
+    ip = request.args.get('ip')
+    location = request.args.get('location')
     # Gets the geneID with the corresponding chromosomeID
     sql = """INSERT INTO `votes` 
             (winnerID, location, timestamp, IP)
             VALUES (%s, %s, %s, %s)
         """
-    cursor.execute(sql, (chromosomeID, locationTest, datetime.now(), ipTest))
+    cursor.execute(sql, (chromosomeID, location, datetime.now(), ip))
     return "Success"
     
 
