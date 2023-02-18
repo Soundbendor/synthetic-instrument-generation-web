@@ -6,16 +6,12 @@ import {useCookies} from 'react-cookie';
 import axios from 'axios';
 import bird from "../video/bird.webm"
 
-// const bigDataApiKey = `bdc_f8d653f72e4743f2bb8f8b8e56c5e86bbdc_f8d653f72e4743f2bb8f8b8e56c5e86b`
-
 let ip = '127.0.0.1'
 let location = 'corvallis'
 
 let instrument_1 = {}
 let instrument_2 = {}
-
-const chromosomeID_1 = 28;
-const chromosomeID_2 = 8;
+let currVotes = 0
 
 // This needs to include randomization and hosting of the audio players on the web server
 const Sig = () => {
@@ -29,17 +25,16 @@ export default Sig;
 
 function AudioPlayers()
 {
-  const [cookies, setCookie] = useCookies();
-
-  getInstrument_1(chromosomeID_1)
-  getInstrument_2(chromosomeID_2)
+  const [cookies, setCookie] = useCookies()
+  getInstrument_1()
+  getInstrument_2()
   
   // Sends SQL update to vote count for chromosome
-  async function vote1(chromosomeID, ip, location) {
+  async function vote(chromosomeID, ip, location) {
     axios({
       method: "GET",
       url:"/vote",
-      params: {chromosomeID, ip, location}
+      params: {chromosomeID, ip, location, currVotes}
     })
     .then((response) => {
       const res = response.data
@@ -53,44 +48,19 @@ function AudioPlayers()
     })
     if ((Number(cookies.votes) + 1) >= 5) {
       setCookie('votes', 0);
+      currVotes = 0;
     }
     else {
       setCookie('votes', (Number(cookies.votes) + 1).toString());
+      currVotes = currVotes + 1
     }
-    console.log(instrument_1)
-  }
-
-  async function vote2(chromosomeID, ip, location) {
-    axios({
-      method: "GET",
-      url:"/vote",
-      params: {chromosomeID, ip, location}
-    })
-    .then((response) => {
-      const res = response.data
-      console.log(res)
-    }).catch((error) => {
-      if (error.response) {
-        console.log(error.response)
-        console.log(error.response.status)
-        console.log(error.response.headers)
-      }
-    })
-    if ((Number(cookies.votes) + 1) >= 5) {
-      setCookie('votes', 0);
-    }
-    else {
-      setCookie('votes', (Number(cookies.votes) + 1).toString());
-    }
-    console.log(instrument_2)
   }
 
   // Function to get sounds
-  function getInstrument_1(chromosomeID) {
+  function getInstrument_1() {
     axios({
       method: "GET",
       url:"/retrieve_member",
-      params: {chromosomeID}
     })
     .then((response) => {
       const res = response.data
@@ -104,11 +74,10 @@ function AudioPlayers()
     })
   }
   
-  function getInstrument_2(chromosomeID) {
+  function getInstrument_2() {
     axios({
       method: "GET",
       url:"/retrieve_member",
-      params: {chromosomeID}
     })
     .then((response) => {
     const res = response.data
@@ -137,7 +106,7 @@ function AudioPlayers()
           <button className = "voteButton" onClick={() => {
             synthesisInstrument(1, instrument_1.harms, instrument_1.attacks, instrument_1.decays, instrument_1.sustains, instrument_1.releases, instrument_1.amps)
             }}>Play Sound 1</button>
-          <button className = "voteButton" onClick={() => {vote1(chromosomeID_1, ip, location)}}>Vote 1</button>
+          <button className = "voteButton" onClick={() => {vote(instrument_1.chromosomeID, ip, location)}}>Vote 1</button>
           <a href = 'google.com' className = "downloadLink" id = "downloadLink1"> </a>
         </div>
         <div className = "voteBox, horizontal-center">
@@ -146,7 +115,7 @@ function AudioPlayers()
         Your browser does not support the video tag.
         </video>
           <button className = "voteButton" onClick={() => {synthesisInstrument(2, instrument_2.harms, instrument_2.attacks, instrument_2.decays, instrument_2.sustains, instrument_2.releases, instrument_2.amps)}}>Play Sound 2</button>
-          <button className = "voteButton" onClick={() => vote2(chromosomeID_1, ip, location)}>Vote 2</button>
+          <button className = "voteButton" onClick={() => vote(instrument_2.chromosomeID, ip, location)}>Vote 2</button>
           <a href = 'google.com' className = "downloadLink" id = "downloadLink2"> </a>
         </div>
       </div>
@@ -180,7 +149,7 @@ function synthesisInstrument(sound_id, harms, attack, decay, sustain, release, m
   for (let i = 0; i < 10; i++) {
     singleFrequency(
       poly, 
-      harms[i], 
+      harms[i] * 220, 
       attack[i], 
       decay[i], 
       sustain[i], 
