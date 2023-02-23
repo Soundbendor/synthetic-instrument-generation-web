@@ -6,14 +6,22 @@ import {useCookies} from 'react-cookie';
 import axios from 'axios';
 import bird from "../video/bird.webm"
 
-let ip = '127.0.0.1'
-let location = 'corvallis'
-
+let ip = ''
+let location = ''
 let instrument_1 = {}
 let instrument_2 = {}
 let currVotes = 0
 
-// This needs to include randomization and hosting of the audio players on the web server
+// Get IP and geolocation
+axios.get('https://ipgeolocation.abstractapi.com/v1/?api_key=abe1a825ca4c4a7b83a74c4486f4ace1')
+    .then(response => {
+      ip = response.data.ip_address
+      location = response.data.city
+    })
+    .catch(error => {
+      console.log(error);
+});
+
 const Sig = () => {
   console.clear();
   return (
