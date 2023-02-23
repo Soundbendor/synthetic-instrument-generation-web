@@ -203,9 +203,7 @@ def vote():
         new_pop = ga.single_island(curr_pop_mems)
         
         # Get new gen_number
-        sql = "SELECT `generation_number` FROM `populations` WHERE populationID = %s"
-        cursor.execute(sql, random_pop)
-        new_gen_number = cursor.fetchone()
+        new_gen_number = new_pop[0].get_gen_number()
         
         # Get new pop id
         new_popID = query.add_population(new_gen_number)
