@@ -112,6 +112,7 @@ function AudioPlayers()
           Your browser does not support the video tag.
           </video>
           <button className = "voteButton" onClick={() => {
+            console.log(instrument_1)
             synthesisInstrument(1, instrument_1.harms, instrument_1.attacks, instrument_1.decays, instrument_1.sustains, instrument_1.releases, instrument_1.amps)
             }}>Play Sound 1</button>
           <button className = "voteButton" onClick={() => {vote(instrument_1.chromosomeID, ip, location)}}>Vote 1</button>
@@ -122,7 +123,9 @@ function AudioPlayers()
           <source src={bird} type="video/webm"/>
         Your browser does not support the video tag.
         </video>
-          <button className = "voteButton" onClick={() => {synthesisInstrument(2, instrument_2.harms, instrument_2.attacks, instrument_2.decays, instrument_2.sustains, instrument_2.releases, instrument_2.amps)}}>Play Sound 2</button>
+          <button className = "voteButton" onClick={() => {
+            console.log(instrument_2)
+            synthesisInstrument(2, instrument_2.harms, instrument_2.attacks, instrument_2.decays, instrument_2.sustains, instrument_2.releases, instrument_2.amps)}}>Play Sound 2</button>
           <button className = "voteButton" onClick={() => vote(instrument_2.chromosomeID, ip, location)}>Vote 2</button>
           <a href = 'google.com' className = "downloadLink" id = "downloadLink2"> </a>
         </div>
