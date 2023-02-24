@@ -494,7 +494,6 @@ def retrieve_member(chromosomeID):
         result = float(result[0])
         w.append(result)
 
-
     
     # Also should return populationID, chromosomeID, geneID, parent1 and parent2
 
@@ -632,9 +631,9 @@ def add_member(member, populationID):
     # Insert the weights of the helper functions of each members
     # w = str(weight[i])
     # dex = str(i + 1)
-    sql = "INSERT INTO `weights` (`value`, `chromosomeID`, `helper_func`) VALUES (%s, %s, %s), (%s, %s, %s), (%s, %s, %s), (%s, %s, %s), (%s, %s, %s), (%s, %s, %s), (%s, %s, %s), (%s, %s, %s), (%s, %s, %s), (%s, %s, %s)"
-    cursor.execute(sql, (str(w[0]), chromosomeID, '1', str(w[1]), chromosomeID, '2', str(w[2]), chromosomeID, '3', str(w[3]), chromosomeID, '4', str(w[4]), chromosomeID, '5', str(w[5]), chromosomeID, '6', str(w[6]), chromosomeID, '7', str(w[7]), chromosomeID, '8', str(w[8]), chromosomeID, '9', str(w[9]), chromosomeID, '10'))
-
+    sql = "INSERT INTO `weights` (`value`, `chromosomeID`, `helper_func`) VALUES (%s, %s, %s), (%s, %s, %s), (%s, %s, %s), (%s, %s, %s), (%s, %s, %s), (%s, %s, %s), (%s, %s, %s), (%s, %s, %s), (%s, %s, %s), (%s, %s, %s), (%s, %s, %s), (%s, %s, %s), (%s, %s, %s), (%s, %s, %s), (%s, %s, %s), (%s, %s, %s), (%s, %s, %s), (%s, %s, %s), (%s, %s, %s), (%s, %s, %s), (%s, %s, %s), (%s, %s, %s), (%s, %s, %s), (%s, %s, %s)"
+    cursor.execute(sql, (str(w[0]), chromosomeID, '1', str(w[1]), chromosomeID, '2', str(w[2]), chromosomeID, '3', str(w[3]), chromosomeID, '4', str(w[4]), chromosomeID, '5', str(w[5]), chromosomeID, '6', str(w[6]), chromosomeID, '7', str(w[7]), chromosomeID, '8', str(w[8]), chromosomeID, '9', str(w[9]), chromosomeID, '10', str(w[10]), chromosomeID, '11', str(w[11]), chromosomeID, '12', str(w[12]), chromosomeID, '13', str(w[13]), chromosomeID, '14', str(w[14]), chromosomeID, '15', str(w[15]), chromosomeID, '16', str(w[16]), chromosomeID, '17', str(w[17]), chromosomeID, '18', str(w[18]), chromosomeID, '19', str(w[19]), chromosomeID, '20', str(w[20]), chromosomeID, '21', str(w[21]), chromosomeID, '22', str(w[22]), chromosomeID, '23', str(w[23]), chromosomeID, '24'))
+    # The database won't actually receive anything without this commi
 
     # The database won't actually receive anything without this commit
     # @@@@@@@@@@@@@@@ UNCOMMENT THIS LINE when you are ready to actually send the inserts @@@@@@@@@@@@@@@ 

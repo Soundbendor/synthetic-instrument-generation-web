@@ -18,7 +18,7 @@ sql = "SELECT * FROM `populations` ORDER BY RAND() LIMIT 1;"
 cursor.execute(sql)
 result = cursor.fetchone()
 random_pop = str(result[0])
-print(random_pop)
+#print(random_pop)
 
 sql = "SELECT `chromosomeID` FROM `chromosomes` WHERE `populationID` = %s"
 cursor.execute(sql, random_pop)
@@ -26,7 +26,7 @@ chromosomes = cursor.fetchall()
 
 for chromosome in chromosomes:
     curr_pop.append(int(re.sub('\D', '', str(chromosome))))
-print(curr_pop)
+#print(curr_pop)
 
 cursor.close()
 
@@ -197,6 +197,7 @@ def vote():
         
         # Grab all members and add to array
         for chromosome in curr_pop:
+            print(chromosome)
             curr_pop_mems.append(query.retrieve_member(chromosome))
             
         # Create new pop
@@ -211,7 +212,7 @@ def vote():
         # Add all members individually to DB
         for chromosome in new_pop:
             query.add_member(chromosome, new_popID)
-        voting_theshold = 0
+        voting_threshold = 0
         
     db.commit()
     cursor.close()
