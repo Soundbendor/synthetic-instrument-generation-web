@@ -490,7 +490,7 @@ def retrieve_member(chromosomeID):
     # @@@@@@@@ will later need to set this to num_funcs @@@@@@@@
     for i in range(num_funcs):
         result = cursor.fetchone()
-        print(result)
+        # print(result)
         result = float(result[0])
         w.append(result)
 
@@ -544,7 +544,7 @@ def add_population(gen_number):
 
     # The database won't actually receive anything without this commit
     # @@@@@@@@@@@@@@@ UNCOMMENT THIS LINE when you are ready to actually send the inserts @@@@@@@@@@@@@@@ 
-    # db.commit()
+    db.commit()
 
     return populationID
 
@@ -637,7 +637,7 @@ def add_member(member, populationID):
 
     # The database won't actually receive anything without this commit
     # @@@@@@@@@@@@@@@ UNCOMMENT THIS LINE when you are ready to actually send the inserts @@@@@@@@@@@@@@@ 
-    #db.commit()
+    db.commit()
 
 
 # Will eventually need an update member function that can be used when a mutation occurs

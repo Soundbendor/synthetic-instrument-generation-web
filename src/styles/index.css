@@ -117,6 +117,10 @@ h1
     width: fit-content;
 }
 
+.voteButton:disabled {
+    background-color: grey; 
+}
+
 .downloadLink {
     position: absolute;
     margin-top: 20%;
