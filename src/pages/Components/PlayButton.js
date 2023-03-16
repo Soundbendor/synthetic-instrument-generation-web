@@ -63,8 +63,8 @@ function PlayButton(props){
         <>
             <div>
                 {props.loading ? <Spinner/> : <button disabled = {disabled} className = "voteButton" onClick={() => {
-                console.log(props.instrument)
                 setDisabled(true)
+                console.log("Playing ID: ", props.instrument.chromosomeID)
                 setTimeout(async ()=> {
                     synthesisInstrument(props.instrument.chromosomeID, 
                                         props.instrument.harms, 

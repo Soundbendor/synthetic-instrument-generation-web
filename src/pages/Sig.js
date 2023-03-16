@@ -89,7 +89,10 @@ function AudioPlayers() {
           Your browser does not support the video tag.
           </video>
           <PlayButton loading = {isLoading_1} instrument = {instrument_1}/>
-          <VoteButton loading = {isLoading_1} instrument = {instrument_1} opponent = {instrument_2}ip = {ip} location = {location} />
+          <VoteButton onClick = {() => {
+              getInstrument_1()
+              getInstrument_2()
+            }} loading = {isLoading_1} instrument = {instrument_1} opponent = {instrument_2}ip = {ip} location = {location} />
           <a href = 'google.com' className = "downloadLink" id = "downloadLink1"> </a>
         </div>
         <div className = "voteBox, horizontal-center">
@@ -97,8 +100,12 @@ function AudioPlayers() {
           <source src={bird} type="video/webm"/>
         Your browser does not support the video tag.
         </video>
-            <PlayButton loading = {isLoading_2} instrument = {instrument_2}/>
-            <VoteButton loading = {isLoading_2} instrument = {instrument_2} opponent = {instrument_1} ip = {ip} location = {location} />
+            <PlayButton onClick = {() => {
+            }} loading = {isLoading_2} instrument = {instrument_2}/>
+            <VoteButton onClick = {() => {
+              getInstrument_1()
+              getInstrument_2()
+            }} loading = {isLoading_2} instrument = {instrument_2} opponent = {instrument_1} ip = {ip} location = {location} />
           <a href = 'google.com' className = "downloadLink" id = "downloadLink2"> </a>
         </div>
       </div>
