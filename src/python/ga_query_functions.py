@@ -383,6 +383,7 @@ def retrieve_member(chromosomeID):
 
     # Gets the geneID with the corresponding chromosomeID
     sql = "SELECT `geneID` FROM `genes` WHERE `chromosomeID` = %s"
+    print(chromosomeID)
     cursor.execute(sql, (chromosomeID))
     result = cursor.fetchone()
     geneID = str(result[0])
