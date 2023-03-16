@@ -26,14 +26,15 @@ function VoteButton(props) {
     }
     return (
         <>
-          {props.loading ? <Spinner/> : <button disabled = {disabled} className = "voteButton" onClick={() => {
-            setDisabled(true)
-            setTimeout(async ()=> {
-                vote(props.instrument.chromosomeID, props.opponent.chromosomeID, props.ip, props.location)
-            window.location.reload(false)
-            setDisabled(false)
-        }, 250)
-            }}>Vote 1</button>}
+        <div onClick={props.onClick}>
+            {props.loading ? <Spinner/> : <button disabled = {disabled} className = "voteButton" onClick={() => {
+                setDisabled(true)
+                setTimeout(async ()=> {
+                    vote(props.instrument.chromosomeID, props.opponent.chromosomeID, props.ip, props.location)
+                setDisabled(false)
+            }, 250)
+                }}>Vote 1</button>}
+        </div>
         </>
     )
 }
