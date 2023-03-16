@@ -142,28 +142,32 @@ def vote():
     cursor = db.cursor()
     
     chromosomeID = request.args.get('chromosomeID')
+    opponentChromosomeID = request.args.get('opponentID')
     ip = request.args.get('ip')
     location = request.args.get('location')
-    
+
     print(chromosomeID)
+    print(opponentChromosomeID)
     print(ip)
     print(location)
     
     print("------------------\n","Generation:",curr_gen_number,"Votes:", voting_threshold, "\n--------------")
     
+
     sql = """INSERT INTO `votes` 
-            (winnerID, location, timestamp, IP)
-            VALUES (%s, %s, %s, %s)"""
+            (winnerID, opponentID, location, timestamp, IP)
+            VALUES (%s, %s, %s, %s, %s)"""
         
-    cursor.execute(sql, (chromosomeID, location, datetime.now(), ip))
+    cursor.execute(sql, (chromosomeID, opponentChromosomeID, location, datetime.now(), ip))
     
+
     if voting_threshold > 3:
         # Create empty array to hold members
         curr_pop_mems = []
         
         # Grab all members and add to array
         for chromosome in curr_pop:
-            print(chromosome)
+            # print(chromosome)
             curr_pop_mems.append(query.retrieve_member(chromosome))
             
         # Create new pop
@@ -209,7 +213,7 @@ def vote():
 
 @api.route('/next_gen')
 def next_gen():
-    global curr_gen_number, curr_pop
+    global voting_threshold, curr_gen_number, curr_pop
     
     db = pymysql.connect(host = 'sigdb.cmnz4advdpzd.us-west-2.rds.amazonaws.com',
         user = 'admin',
@@ -265,6 +269,7 @@ def next_gen():
 
 @api.route('/clearDB')
 def clearDB():
+    global voting_threshold, curr_gen_number, curr_pop
     db = pymysql.connect(host = 'sigdb.cmnz4advdpzd.us-west-2.rds.amazonaws.com',
         user = 'admin',
         password = 'Beaver!1',
@@ -274,11 +279,74 @@ def clearDB():
     
     sql = ["DELETE FROM votes;", "DELETE FROM weights;", "DELETE FROM attacks;", "DELETE FROM decays;", "DELETE FROM sustains;", "DELETE FROM releases;", "DELETE FROM amplitudes;", "DELETE FROM harmonics;", "DELETE FROM base_Frequencies;", "DELETE FROM genes;", "DELETE FROM chromosomes;", "DELETE FROM populations;"]
 
-    for query in sql:
-        cursor.execute(query)
+    for sqlCall in sql:
+        cursor.execute(sqlCall)
+
+    db.commit()
+    cursor.close()
+
+    db = pymysql.connect(host = 'sigdb.cmnz4advdpzd.us-west-2.rds.amazonaws.com',
+    user = 'admin',
+    password = 'Beaver!1',
+    database = 'sig')
+
+    cursor = db.cursor()
+
+    curr_pop = ga.initial_gen()
+
+    # Get new gen_number
+    new_gen_number = curr_pop[0].get_gen_number()
+    # Make new gen number to be curr gen number
+    curr_gen_number = new_gen_number
+
+    # Get new pop id
+    new_popID = query.add_population(new_gen_number)
+    
+    # Add all members individually to DB
+    for chromosome in curr_pop:
+        query.add_member(chromosome, new_popID)
+        
+    # Update curr_pop    
+    sql = "SELECT `populationID` FROM `populations` WHERE `generation_number` = %s"
+    cursor.execute(sql, curr_gen_number)
+    result = cursor.fetchone()
+    curr_popID = int(re.sub('\D', '', str(result)))
+
+    sql = "SELECT `chromosomeID` FROM `chromosomes` WHERE `populationID` = %s"
+    cursor.execute(sql, curr_popID)
+    chromosomes = cursor.fetchall()
+
+    curr_pop = []
+
+    for chromosome in chromosomes:
+        curr_pop.append(int(re.sub('\D', '', str(chromosome))))
+
+    sql = "SELECT `generation_number` FROM `populations` WHERE `generation_number`=(SELECT max(`generation_number`) FROM `populations`)"
+    cursor.execute(sql)
+    curr_gen_number = cursor.fetchone()
+    curr_gen_number = int(re.sub('\D', '', str(curr_gen_number)))
+
+    print("\n\n\n\nGen Num:", curr_gen_number,"\n\n\n\n")
+
+    # Update curr_pop    
+    sql = "SELECT `populationID` FROM `populations` WHERE `generation_number` = %s"
+    cursor.execute(sql, curr_gen_number)
+    result = cursor.fetchone()
+    curr_popID = int(re.sub('\D', '', str(result)))
+
+    sql = "SELECT `chromosomeID` FROM `chromosomes` WHERE `populationID` = %s"
+    cursor.execute(sql, curr_popID)
+    chromosomes = cursor.fetchall()
+
+    for chromosome in chromosomes:
+        curr_pop.append(int(re.sub('\D', '', str(chromosome))))
+    #print(curr_pop)
     
     db.commit()
     cursor.close()
+
+    voting_threshold = 0
+
     return "Clear DB Success"
 
 db = pymysql.connect(host = 'sigdb.cmnz4advdpzd.us-west-2.rds.amazonaws.com',

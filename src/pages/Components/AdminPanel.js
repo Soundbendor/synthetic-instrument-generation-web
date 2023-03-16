@@ -51,6 +51,7 @@ function ClearDatabaseButton(props) {
     }
 
     return <button disabled = {disabled} onClick = {() => {
+        console.log("test")
         nextGen()
     }} className = "voteButton">Clear DB</button>
 }

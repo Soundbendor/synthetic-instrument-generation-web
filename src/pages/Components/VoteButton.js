@@ -6,12 +6,12 @@ function VoteButton(props) {
     // Disables button to stop user from spamming buttons
     const [disabled,setDisabled] = useState(false);
     // Sends SQL update to vote count for chromosome
-    async function vote(chromosomeID, ip, location) {
+    async function vote(chromosomeID, opponentID, ip, location) {
         setDisabled(true)
         axios({
         method: "GET",
         url:"/vote",
-        params: {chromosomeID, ip, location}
+        params: {chromosomeID, opponentID, ip, location}
         })
         .then((response) => {
         // const res = response.data
@@ -27,8 +27,12 @@ function VoteButton(props) {
     return (
         <>
           {props.loading ? <Spinner/> : <button disabled = {disabled} className = "voteButton" onClick={() => {
-            vote(props.instrument.chromosomeID, props.ip, props.location)
+            setDisabled(true)
+            setTimeout(async ()=> {
+                vote(props.instrument.chromosomeID, props.opponent.chromosomeID, props.ip, props.location)
             window.location.reload(false)
+            setDisabled(false)
+        }, 250)
             }}>Vote 1</button>}
         </>
     )
