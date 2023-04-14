@@ -33,7 +33,7 @@ function VoteButton(props) {
                     vote(props.instrument.chromosomeID, props.opponent.chromosomeID, props.ip, props.location)
                 setDisabled(false)
             }, 250)
-                }}>Vote 1</button>}
+                }}>Vote</button>}
         </div>
         </>
     )
