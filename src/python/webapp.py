@@ -9,7 +9,6 @@ voting_threshold = 0
 
 api = Flask(__name__)
 
-# Either do a random query on 2 sounds, or gain this from the GA
 @api.route('/retrieve_member')
 def retrieve_member():
     db = pymysql.connect(host = 'sigdb.cmnz4advdpzd.us-west-2.rds.amazonaws.com',

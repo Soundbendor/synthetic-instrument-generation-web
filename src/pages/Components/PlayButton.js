@@ -22,10 +22,13 @@ function PlayButton(props){
   
   function synthesisInstrument(sound_id, harms, attack, decay, sustain, release, mul) {
     // Create synth and connect to recorder
-    const poly = new Tone.PolySynth().toDestination();
+    const poly = new Tone.PolySynth();
     const recorder = new Tone.Recorder();
-    poly.connect(recorder);
-    recorder.start();
+    const distortion = new Tone.WaveShaper(
+      (val) => Math.tanh(100*val) / 100, 2048).toDestination();
+    poly.connect(distortion);
+    // poly.connect(recorder);
+    // recorder.start();
   
     // Create n frequencies and pass their values
     for (let i = 0; i < 10; i++) {
