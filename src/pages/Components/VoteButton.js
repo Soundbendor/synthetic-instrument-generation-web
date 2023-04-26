@@ -7,10 +7,11 @@ function VoteButton(props) {
     const [disabled,setDisabled] = useState(false);
     // Sends SQL update to vote count for chromosome
     async function vote(chromosomeID, opponentID, ip, location) {
+        const api_url = process.env.API_URL;
         setDisabled(true)
         axios({
         method: "GET",
-        url:"/vote",
+        url:`${api_url}/vote`,
         params: {chromosomeID, opponentID, ip, location}
         })
         .then((response) => {

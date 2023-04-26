@@ -24,8 +24,11 @@ function AudioPlayers() {
   const [isLoading_1, setIsLoading_1] = useState(false)
   const [isLoading_2, setIsLoading_2] = useState(false)
 
+  const api_url = process.env.API_URL;
+  const ipApiKey = process.env.IP_API_KEY;
+
   useEffect(() => {
-    axios.get('https://ipgeolocation.abstractapi.com/v1/?api_key=abe1a825ca4c4a7b83a74c4486f4ace1')
+    axios.get(`https://ipgeolocation.abstractapi.com/v1/?api_key=${ipApiKey}`)
     .then(response => {
       setIP(response.data.ip_address)
       setLocation(response.data.city)
@@ -38,10 +41,11 @@ function AudioPlayers() {
 
   // Function to get sounds
   async function getInstrument_1() {
+    const api_url = process.env.API_URL;
     setIsLoading_1(true)
     axios({
       method: "GET",
-      url:"/retrieve_member",
+      url:`${api_url}/retrieve_member`,
     })
     .then((response) => {
       const res = response.data
@@ -57,10 +61,11 @@ function AudioPlayers() {
   }
   
   async function getInstrument_2() {
+    const api_url = process.env.API_URL;
     setIsLoading_2(true)
     axios({
       method: "GET",
-      url:"/retrieve_member",
+      url:`${api_url}/retrieve_member`,
     })
     .then((response) => {
     const res = response.data

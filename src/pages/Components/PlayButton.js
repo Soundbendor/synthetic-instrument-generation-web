@@ -6,27 +6,36 @@ function PlayButton(props){
     const [disabled,setDisabled] = useState(false);
 
     // Assign values and play
-    function singleFrequency(poly, frequency, attack, decay, sustain, release, mul) {
+    function singleFrequency(poly, analyser, frequency, attack, decay, sustain, release, mul) {
         const now = Tone.now()
+
         poly.set({
-        "envelope" : {
+        "envelope" : 
+        {
             "attack": attack,
             "decay": decay,
             "sustain": sustain,
             "release": release
         }
         })
+
         // 0.01 is how long the note is held for
         poly.triggerAttackRelease(frequency, 0.01, now, mul);
+
+        const fft = analyser.getValue();
+        console.log(fft)
     }
   
-  function synthesisInstrument(sound_id, harms, attack, decay, sustain, release, mul) {
-    // Create synth and connect to recorder
+  function synthesizeInstrument(sound_id, harms, attack, decay, sustain, release, mul) {
+    // Create synth and connect to recorder / distortion
     const poly = new Tone.PolySynth();
     const recorder = new Tone.Recorder();
+    const analyser = new Tone.FFT(2048);
     const distortion = new Tone.WaveShaper(
       (val) => Math.tanh(100*val) / 100, 2048).toDestination();
+    poly.connect(analyser);
     poly.connect(distortion);
+
     // poly.connect(recorder);
     // recorder.start();
   
@@ -34,6 +43,7 @@ function PlayButton(props){
     for (let i = 0; i < 10; i++) {
       singleFrequency(
         poly, 
+        analyser,
         harms[i] * 220, 
         attack[i], 
         decay[i], 
@@ -43,7 +53,7 @@ function PlayButton(props){
       )
     }
   
-    // Once done recorded, setup download link
+    // // Once done recorded, setup download link
     // setTimeout(async () => {
     //   const recording = await recorder.stop();
     //   const url = URL.createObjectURL(recording);
@@ -69,14 +79,14 @@ function PlayButton(props){
                 setDisabled(true)
                 console.log("Playing ID: ", props.instrument.chromosomeID)
                 setTimeout(async ()=> {
-                    synthesisInstrument(props.instrument.chromosomeID, 
-                                        props.instrument.harms, 
-                                        props.instrument.attacks, 
-                                        props.instrument.decays, 
-                                        props.instrument.sustains, 
-                                        props.instrument.releases, 
-                                        props.instrument.amps)
-                    setDisabled(false)
+                  synthesizeInstrument(props.instrument.chromosomeID, 
+                                      props.instrument.harms, 
+                                      props.instrument.attacks, 
+                                      props.instrument.decays, 
+                                      props.instrument.sustains, 
+                                      props.instrument.releases, 
+                                      props.instrument.amps)
+                  setDisabled(false)
                 }, 250)
 
                 }}>Play Sound</button>}

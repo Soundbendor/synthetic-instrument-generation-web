@@ -5,10 +5,11 @@ function NextGenButton(props) {
     const [disabled, setDisabled] = useState(false)
 
     async function nextGen() {
+        const api_url = process.env.API_URL;
         setDisabled(false)
         axios({
         method: "GET",
-        url:"/next_gen",
+        url:`${api_url}/next_gen`,
         })
         .then((response) => {
             const res = response.data
@@ -32,10 +33,11 @@ function ClearDatabaseButton(props) {
     const [disabled, setDisabled] = useState(false)
 
     async function nextGen() {
+        const api_url = process.env.API_URL;
         setDisabled(false)
         axios({
         method: "GET",
-        url:"/clearDB",
+        url:`${api_url}/clearDB`,
         })
         .then((response) => {
             const res = response.data
