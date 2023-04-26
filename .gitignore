@@ -1095,3 +1095,5 @@ venv/Scripts/pythonw.exe
 src/.flaskenv
 src/clapp.wav
 package.json
+src/python/GA_fitness_scores.txt
+sig.tar

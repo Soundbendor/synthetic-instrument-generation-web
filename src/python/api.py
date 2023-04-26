@@ -1,20 +1,36 @@
 from flask import Flask, Response, request
 from datetime import datetime
-import pymysql, os, numpy, ga, re, random
+from flask_cors import CORS
+from dotenv import load_dotenv
+
+import pymysql, os, numpy, re, random
+
+import ga
 import ga_query_functions as query
 
+load_dotenv()
+
+db_host = os.getenv('MYSQL_HOST')
+db_user = os.getenv('MYSQL_USER')
+db_pass = os.getenv('MYSQL_PASS')
+db_name = os.getenv('MYSQL_DB')
+
+# Global variables
 curr_gen_number = 0
 random_pop = 0
 voting_threshold = 0
 
 api = Flask(__name__)
+CORS(api)
 
+
+# Retrieve a single member
 @api.route('/retrieve_member')
 def retrieve_member():
-    db = pymysql.connect(host = 'sigdb.cmnz4advdpzd.us-west-2.rds.amazonaws.com',
-                user = 'admin',
-                password = 'Beaver!1',
-                database = 'sig')
+    db = pymysql.connect(host = db_host,
+                        user = db_user,
+                        password = db_pass,
+                        database = db_name)
 
     cursor = db.cursor()
     
@@ -127,16 +143,17 @@ def retrieve_member():
     return instrument
 
 
+# Vote for member
 @api.route('/vote')
 def vote():
     global voting_threshold, random_pop, curr_gen_number, curr_pop
     gen_number = 0
     voting_threshold += 1
     
-    db = pymysql.connect(host = 'sigdb.cmnz4advdpzd.us-west-2.rds.amazonaws.com',
-            user = 'admin',
-            password = 'Beaver!1',
-            database = 'sig')
+    db = pymysql.connect(host = db_host,
+                        user = db_user,
+                        password = db_pass,
+                        database = db_name)
 
     cursor = db.cursor()
     
@@ -210,14 +227,16 @@ def vote():
     
     return "Vote Success"
 
+
+# Admin control, skip to next gen
 @api.route('/next_gen')
 def next_gen():
     global voting_threshold, curr_gen_number, curr_pop
     
-    db = pymysql.connect(host = 'sigdb.cmnz4advdpzd.us-west-2.rds.amazonaws.com',
-        user = 'admin',
-        password = 'Beaver!1',
-        database = 'sig')
+    db = pymysql.connect(host = db_host,
+                        user = db_user,
+                        password = db_pass,
+                        database = db_name)
 
     cursor = db.cursor()
 
@@ -266,13 +285,15 @@ def next_gen():
     
     return "Next Gen Success"
 
+
+# Admin control, clear entire DB
 @api.route('/clearDB')
 def clearDB():
     global voting_threshold, curr_gen_number, curr_pop
-    db = pymysql.connect(host = 'sigdb.cmnz4advdpzd.us-west-2.rds.amazonaws.com',
-        user = 'admin',
-        password = 'Beaver!1',
-        database = 'sig')
+    db = pymysql.connect(host = db_host,
+                        user = db_user,
+                        password = db_pass,
+                        database = db_name)
 
     cursor = db.cursor()
     
@@ -284,10 +305,10 @@ def clearDB():
     db.commit()
     cursor.close()
 
-    db = pymysql.connect(host = 'sigdb.cmnz4advdpzd.us-west-2.rds.amazonaws.com',
-    user = 'admin',
-    password = 'Beaver!1',
-    database = 'sig')
+    db = pymysql.connect(host = db_host,
+                        user = db_user,
+                        password = db_pass,
+                        database = db_name)
 
     cursor = db.cursor()
 
@@ -340,19 +361,27 @@ def clearDB():
     for chromosome in chromosomes:
         curr_pop.append(int(re.sub('\D', '', str(chromosome))))
     #print(curr_pop)
-    
     db.commit()
     cursor.close()
+    
+    print("test")
 
     voting_threshold = 0
 
     return "Clear DB Success"
 
-db = pymysql.connect(host = 'sigdb.cmnz4advdpzd.us-west-2.rds.amazonaws.com',
-            user = 'admin',
-            password = 'Beaver!1',
-            database = 'sig')
 
+
+
+
+
+
+
+# Initial startup code to clear DB and start an initial generation
+db = pymysql.connect(host = db_host,
+                    user = db_user,
+                    password = db_pass,
+                    database = db_name)
 cursor = db.cursor()
 
 # Reset DB and create initial gen
@@ -409,7 +438,6 @@ for chromosome in chromosomes:
 
 cursor.close()
 
-
 if __name__ == '__main__':
-    api.run(host='127.0.0.1', port=5000, debug=True)
+    api.run(host='0.0.0.0', port=5000, debug=True)
     
