@@ -10,26 +10,26 @@ function PlayButton(props){
         const now = Tone.now()
 
         poly.set({
-        "envelope" : 
-        {
-            "attack": attack,
-            "decay": decay,
-            "sustain": sustain,
-            "release": release
-        }
+          "envelope" : 
+          {
+              "attack": attack,
+              "decay": decay,
+              "sustain": sustain,
+              "release": release
+          }
         })
 
         // 0.01 is how long the note is held for
         poly.triggerAttackRelease(frequency, 0.01, now, mul);
 
-        const fft = analyser.getValue();
-        console.log(fft)
+        // const fft = analyser.getValue();
+        // console.log(fft)
     }
   
   function synthesizeInstrument(sound_id, harms, attack, decay, sustain, release, mul) {
     // Create synth and connect to recorder / distortion
     const poly = new Tone.PolySynth();
-    const recorder = new Tone.Recorder();
+    // const recorder = new Tone.Recorder();
     const analyser = new Tone.FFT(2048);
     const distortion = new Tone.WaveShaper(
       (val) => Math.tanh(100*val) / 100, 2048).toDestination();
@@ -89,7 +89,7 @@ function PlayButton(props){
                   setDisabled(false)
                 }, 250)
 
-                }}>Play Sound</button>}
+                }}>Play Sound {props.id}</button>}
             </div>
         </>
     )

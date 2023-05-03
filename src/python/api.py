@@ -31,7 +31,6 @@ def retrieve_member():
                         user = db_user,
                         password = db_pass,
                         database = db_name)
-
     cursor = db.cursor()
     
     chromosomeID = random.choice(curr_pop)
@@ -364,8 +363,6 @@ def clearDB():
     db.commit()
     cursor.close()
     
-    print("test")
-
     voting_threshold = 0
 
     return "Clear DB Success"
