@@ -24,9 +24,9 @@ Called from synthesizeInstrument and passed single values from arrays at a time 
 # Back End / API
 The back-end is written in Python using the Flask framework to create our API which connects to our MYSQL amazon RDS database. It consists of various endpoints such as
 
-- ```/retrieve_member``` grabs a random instrument JSON object from the current generation from the database.
+- ```/retrieve_member``` grabs a random instrument JSON object from the current generation from the database. All current generation members are stored within the ```curr_pop``` array.
 
-- ```/vote``` triggered by VoteButton to vote for that instrument, gets passed ```chromosomeID``` as the winners ID, ```opponentChromosomeID``` as the losers ID, ```ip```, and ```location``` then inserts the vote information into the database including datetime of the vote.
+- ```/vote``` triggered by VoteButton to vote for that instrument, gets passed ```chromosomeID``` as the winners ID, ```opponentChromosomeID``` as the losers ID, ```ip```, and ```location``` then inserts the vote information into the database including datetime of the vote. Once the voting threshhold has been met, the GA will be triggered and generate a new generation which is then stored into ```curr_pop```.
 
 - ```/next_gen``` admin function to skip to the next generation.
 
