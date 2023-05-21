@@ -2,6 +2,25 @@
 
 Our front end is built in React. The index.html is within ```./public/``` which creates the root element in ```./src/index.js``` to build the whole web application, which is essentially all within ```./src/pages/Sig.js```. Essentially the whole application is embedded within the buttons PlayButton and VoteButton. Both of these use axios to make HTTP requests to our Flask API. All components can be found within ```./src/pages/components ```
 
+## Sound Generation
+
+All sounds are synthesized via the Tone.js library. Each individual harmonic is created separately with independent ADSR volume envelopes. This is all within ```.src/pages/components/PlayButton.js```, in the functions 
+
+```synthesizeInstrument(sound_id, harms, attack, decay, sustain, release, mul)``` 
+- ```sound_id:``` The id of the sound being created.
+- ```harms:``` an array of the harmonics to create instrument.
+- ```attack:``` an array of attack lengths for each harmonic.
+- ```decay:``` an array of decay lengths for each harmonic.
+- ```sustain:``` an array of sustain lengths for each harmonic.
+- ```release:``` an array of release lengths for each harmonic.
+- ```mul:``` an array of multipliers or velocities for each harmonic.
+
+```singleFrequency(poly, analyser, frequency, attack, decay, sustain, release, mul)```
+Called from synthesizeInstrument and passed single values from arrays at a time to create each individual harmonic.
+- ```poly:``` used to play each individual harmonic.
+- ```analyser:``` used for analyzing instrument frequency content.
+- ```frequency, attack, decay, sustain, release, mul:``` individual values from previous arrays to synthesize one by one.
+
 # Back End / API
 The back-end is written in Python using the Flask framework to create our API which connects to our MYSQL amazon RDS database. It consists of various endpoints such as
 
