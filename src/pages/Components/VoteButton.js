@@ -7,21 +7,21 @@ function VoteButton(props) {
     const [disabled,setDisabled] = useState(false);
     // Sends SQL update to vote count for chromosome
     async function vote(chromosomeID, opponentID, ip, location) {
-        const api_url = process.env.API_URL || 'http://localhost:5000';
+        const api_url = 'https://sig-api.9s7d9oh6r2mg0.us-east-1.cs.amazonlightsail.com';
         setDisabled(true)
         axios({
-        method: "GET",
-        url:`${api_url}/vote`,
-        params: {chromosomeID, opponentID, ip, location}
-        })
-        .then((response) => {
-        // const res = response.data
-        }).catch((error) => {
-        if (error.response) {
-            console.log(error.response)
-            console.log(error.response.status)
-            console.log(error.response.headers)
-        }
+            method: "GET",
+            url:`${api_url}/vote`,
+            params: {chromosomeID, opponentID, ip, location}
+            })
+            .then((response) => {
+            // const res = response.data
+            }).catch((error) => {
+            if (error.response) {
+                console.log(error.response)
+                console.log(error.response.status)
+                console.log(error.response.headers)
+            }
         })
         setDisabled(false)
     }

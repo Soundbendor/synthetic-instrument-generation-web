@@ -34,7 +34,7 @@
   "scripts": {
     "start": "react-scripts --openssl-legacy-provider start",
     "start-backend": "env/bin/flask run --no-debugger",
-    "build": "react-scripts build",
+    "build": "react-scripts --openssl-legacy-provider build",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
