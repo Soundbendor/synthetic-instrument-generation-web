@@ -16,7 +16,7 @@ COPY . .
 # Expose port 3000 for the application
 EXPOSE 3000
 
-ENV API_URL=http://127.0.0.1:5000/
+ENV API_URL=https://sig-api.9s7d9oh6r2mg0.us-east-1.cs.amazonlightsail.com/
 
 ENV IP_API_KEY=abe1a825ca4c4a7b83a74c4486f4ace1
 

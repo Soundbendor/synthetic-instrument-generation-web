@@ -700,6 +700,8 @@ def mutate_gene(population):
         #print("Mutated s!")
         for i in range(gene_length):
             population[p].s[i] = population[p].s[i] * scalar
+            if population[p].s[i] > 1.0:
+                population[p].s[i] = 1.0
 
     elif(c == 5):
         #print("Mutated r!")

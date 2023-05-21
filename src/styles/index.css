@@ -4,12 +4,9 @@
     src: url("../fonts/VCR_OSD_MONO_1.ttf");
     }
 
-html * {
-}
-
 div {
-        position: relative;
-        animation: titleAnimation 0.5s ease-out forwards;
+    position: relative;
+    animation: titleAnimation 0.5s ease-out forwards;
 }
 
 a:hover {
@@ -19,38 +16,30 @@ a:hover {
     transition: all 0.25s ease-in;
   }
 
-body
+html, body
 {
     background-color: rgb(198, 218, 231);
     font-family: "vcr";
     font-size: 2vw;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
 }
 
-h1
-{
-    position: absolute;
-    color:white;
-    font-size: 3vw;
+h1 {
+    margin: 0px;
+    background-color: black;
+    position: fixed;
+    color: white;
+    font-size: 4vw;
     text-shadow: 0.1vw 0.1vh red, 0.15vw 0.15vh blue;
     display: inline-block;
     white-space: nowrap;
-    margin-top:12%;
-    width:100%;
-    height:30%;
+    width: 100%;
     text-align: center;
     left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: -1;
-}
-
-.horizontal-center 
-{
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 14%;
-    height: 40%;
-    width: 35vw;
+    transform: translate(-50%, 0%);
+    z-index: 9999;
 }
 
 .vertical-center
@@ -89,32 +78,36 @@ h1
 }
 
 .videoPlayer {
-    margin-left: 30%;
+    /* margin-left: 30%;
     width: 40%;
     height: auto;
-    display: block;
+    display: block; */
+    /* margin: auto; */
 }
 
 .voteBox
 {
+    /* background-color: black; */
+    width: 100%;
+    min-height: 100vh;
+}
+
+.voteElements
+{
+    position: relative; 
+    transform: translateY(50%);
 }
 
 .voteButton
 {
     background-color: black;
+    border-radius: 5px;
+    border: 0px;
     color:white;
     font-size: 15px;
-    border-radius: 5px;
     padding: 10px;
-    border: 0px;
-    margin-top: 25px;
-    margin-left: 1%;
-    -ms-transform: translateY(-50%);
-    transform: translateY(-50%);
-    float: center;
-    left:40%;
-    position: relative;
-    width: fit-content;
+    margin: 10px;
+    z-index: 100;
 }
 
 .voteButton:disabled {
@@ -136,7 +129,8 @@ h1
 
 .voteButton:hover
 {
-    background-color: rgb(173, 173, 173);
+    background-color: rgb(255, 255, 255);
+    color: black;
     transition: all 0.2s ease-in;
 }
 

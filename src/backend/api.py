@@ -1,4 +1,4 @@
-from flask import Flask, Response, request
+from flask import Flask, request
 from datetime import datetime
 from flask_cors import CORS
 from dotenv import load_dotenv
@@ -9,29 +9,30 @@ import ga
 import ga_query_functions as query
 
 load_dotenv()
-
-db_host = os.getenv('MYSQL_HOST')
-db_user = os.getenv('MYSQL_USER')
-db_pass = os.getenv('MYSQL_PASS')
-db_name = os.getenv('MYSQL_DB')
+db_host = os.environ.get('MYSQL_HOST')
+db_user = os.environ.get('MYSQL_USER')
+db_pass = os.environ.get('MYSQL_PASS')
+db_name = os.environ.get('MYSQL_DB')
 
 # Global variables
 curr_gen_number = 0
 random_pop = 0
 voting_threshold = 0
 
+
 api = Flask(__name__)
-CORS(api)
+CORS(api, origins='http://sig-bucket.s3-website-us-east-1.amazonaws.com')
 
 
-# Retrieve a single member
+############################
+# Retrieve a single member #
+############################
 @api.route('/retrieve_member')
 def retrieve_member():
     db = pymysql.connect(host = db_host,
                         user = db_user,
                         password = db_pass,
                         database = db_name)
-
     cursor = db.cursor()
     
     chromosomeID = random.choice(curr_pop)
@@ -139,11 +140,14 @@ def retrieve_member():
     }
     
     cursor.close()
+    db.close()
     
     return instrument
 
 
-# Vote for member
+###################
+# Vote for member #
+###################
 @api.route('/vote')
 def vote():
     global voting_threshold, random_pop, curr_gen_number, curr_pop
@@ -162,12 +166,12 @@ def vote():
     ip = request.args.get('ip')
     location = request.args.get('location')
 
-    print(chromosomeID)
-    print(opponentChromosomeID)
-    print(ip)
-    print(location)
-    
-    print("------------------\n","Generation:",curr_gen_number,"Votes:", voting_threshold, "\n--------------")
+    # Display vote info
+    print("Voted for:", chromosomeID)
+    print("Oponnent Chromosome ID:", opponentChromosomeID)
+    print("IP:", ip)
+    print("Location:", location)
+    print("Generation:", curr_gen_number, "Votes:", voting_threshold)
     
 
     sql = """INSERT INTO `votes` 
@@ -224,11 +228,13 @@ def vote():
         
     db.commit()
     cursor.close()
+    db.close()
     
     return "Vote Success"
 
-
-# Admin control, skip to next gen
+###################################
+# Admin control, skip to next gen #
+###################################
 @api.route('/next_gen')
 def next_gen():
     global voting_threshold, curr_gen_number, curr_pop
@@ -282,11 +288,13 @@ def next_gen():
     
     db.commit()
     cursor.close()
+    db.close()
     
     return "Next Gen Success"
 
-
-# Admin control, clear entire DB
+##################################
+# Admin control, clear entire DB #
+##################################
 @api.route('/clearDB')
 def clearDB():
     global voting_threshold, curr_gen_number, curr_pop
@@ -304,6 +312,7 @@ def clearDB():
 
     db.commit()
     cursor.close()
+    db.close()
 
     db = pymysql.connect(host = db_host,
                         user = db_user,
@@ -363,9 +372,7 @@ def clearDB():
     #print(curr_pop)
     db.commit()
     cursor.close()
-    
-    print("test")
-
+    db.close()
     voting_threshold = 0
 
     return "Clear DB Success"
@@ -376,8 +383,10 @@ def clearDB():
 
 
 
+####################################################################
+# Initial startup code to clear DB and start an initial generation #
+####################################################################
 
-# Initial startup code to clear DB and start an initial generation
 db = pymysql.connect(host = db_host,
                     user = db_user,
                     password = db_pass,
@@ -390,6 +399,7 @@ curr_pop = ga.initial_gen()
 
 # Get new gen_number
 new_gen_number = curr_pop[0].get_gen_number()
+
 # Make new gen number to be curr gen number
 curr_gen_number = new_gen_number
 
@@ -420,9 +430,8 @@ cursor.execute(sql)
 curr_gen_number = cursor.fetchone()
 curr_gen_number = int(re.sub('\D', '', str(curr_gen_number)))
 
-print("\n\n\n\nGen Num:", curr_gen_number,"\n\n\n\n")
+print("Gen Num:", curr_gen_number)
 
-# Update curr_pop    
 sql = "SELECT `populationID` FROM `populations` WHERE `generation_number` = %s"
 cursor.execute(sql, curr_gen_number)
 result = cursor.fetchone()
@@ -437,7 +446,8 @@ for chromosome in chromosomes:
 #print(curr_pop)
 
 cursor.close()
+db.close()
 
 if __name__ == '__main__':
-    api.run(host='0.0.0.0', port=5000, debug=True)
+    api.run(host='0.0.0.0', port=5000, debug=False)
     

@@ -10,20 +10,20 @@ function PlayButton(props){
         const now = Tone.now()
 
         poly.set({
-        "envelope" : 
-        {
-            "attack": attack,
-            "decay": decay,
-            "sustain": sustain,
-            "release": release
-        }
+          "envelope" : 
+          {
+              "attack": attack,
+              "decay": decay,
+              "sustain": sustain,
+              "release": release
+          }
         })
 
         // 0.01 is how long the note is held for
         poly.triggerAttackRelease(frequency, 0.01, now, mul);
 
-        const fft = analyser.getValue();
-        console.log(fft)
+        // const fft = analyser.getValue();
+        // console.log(fft)
     }
   
   function synthesizeInstrument(sound_id, harms, attack, decay, sustain, release, mul) {
@@ -32,12 +32,11 @@ function PlayButton(props){
     const recorder = new Tone.Recorder();
     const analyser = new Tone.FFT(2048);
     const distortion = new Tone.WaveShaper(
-      (val) => Math.tanh(100*val) / 100, 2048).toDestination();
+      (val) => val, 2048).toDestination();
     poly.connect(analyser);
     poly.connect(distortion);
-
-    // poly.connect(recorder);
-    // recorder.start();
+    poly.connect(recorder);
+    recorder.start();
   
     // Create n frequencies and pass their values
     for (let i = 0; i < 10; i++) {
@@ -53,24 +52,25 @@ function PlayButton(props){
       )
     }
   
-    // // Once done recorded, setup download link
-    // setTimeout(async () => {
-    //   const recording = await recorder.stop();
-    //   const url = URL.createObjectURL(recording);
-    //   if (sound_id === 1) {
-    //     const anchor = document.querySelector("#downloadLink1");
-    //     anchor.download = "sound_1.webm";
-    //     anchor.href = url;
-    //     anchor.innerHTML = "Download now!";
-    //   }
-    //   else {
-    //     const anchor = document.querySelector("#downloadLink2");
-    //     anchor.download = "sound_2.webm";
-    //     anchor.type = "audio/webm"
-    //     anchor.href = url;
-    //     anchor.innerHTML = "Download now!";
-    //   }
-    // }, 4000)
+    // Once done recorded, setup download link
+    setTimeout(async () => {
+      // const recording = await recorder.stop();
+      // const url = URL.createObjectURL(recording);
+      
+      // // Create a download link
+      // const downloadLink = document.createElement('a');
+      // downloadLink.href = url;
+      // downloadLink.download = `Instrument_${sound_id}.wav`; // Set the desired filename for the download
+      
+      // // Add the link to the document
+      // document.body.appendChild(downloadLink);
+      
+      // // Simulate a click on the download link
+      // downloadLink.click();
+      
+      // // Remove the download link from the document
+      // document.body.removeChild(downloadLink);
+    }, 4000)
   }
     return (
         <>
@@ -89,7 +89,7 @@ function PlayButton(props){
                   setDisabled(false)
                 }, 250)
 
-                }}>Play Sound</button>}
+                }}>Play Sound {props.id}</button>}
             </div>
         </>
     )
