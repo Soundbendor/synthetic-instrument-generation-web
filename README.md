@@ -48,6 +48,10 @@ Run the command to install dependencies.
 
 ``` npm install ```
 
+then run
+
+```npm start```
+
 ## API:
 Run this command to install Flask and other dependencies for the API.
 
