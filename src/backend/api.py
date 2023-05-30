@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from datetime import datetime
 from flask_cors import CORS
 from dotenv import load_dotenv
@@ -21,13 +21,14 @@ voting_threshold = 0
 
 
 api = Flask(__name__)
-CORS(api, origins='http://sig-bucket.s3-website-us-east-1.amazonaws.com')
+# CORS(api, origins='http://127.0.0.1:5000')
+CORS(api)
 
 
 ############################
 # Retrieve a single member #
 ############################
-@api.route('/retrieve_member')
+@api.route('/retrieve_member', methods=['GET'])
 def retrieve_member():
     db = pymysql.connect(host = db_host,
                         user = db_user,
@@ -142,13 +143,15 @@ def retrieve_member():
     cursor.close()
     db.close()
     
-    return instrument
+    response = jsonify(instrument)
+    
+    return response
 
 
 ###################
 # Vote for member #
 ###################
-@api.route('/vote')
+@api.route('/vote', methods=['POST'])
 def vote():
     global voting_threshold, random_pop, curr_gen_number, curr_pop
     gen_number = 0
@@ -158,7 +161,7 @@ def vote():
                         user = db_user,
                         password = db_pass,
                         database = db_name)
-
+    
     cursor = db.cursor()
     
     chromosomeID = request.args.get('chromosomeID')
@@ -180,20 +183,19 @@ def vote():
         
     cursor.execute(sql, (chromosomeID, opponentChromosomeID, location, datetime.now(), ip))
     
-
     if voting_threshold > 3:
         # Create empty array to hold members
         curr_pop_mems = []
         
         # Grab all members and add to array
         for chromosome in curr_pop:
-            # print(chromosome)
             curr_pop_mems.append(query.retrieve_member(chromosome))
             
         # Create new pop
         new_pop = ga.single_island(curr_pop_mems)
         for item in new_pop:
             print(item.get_gen_number())
+            
         # Get new gen_number
         new_gen_number = new_pop[0].get_gen_number()
         # Make new gen number to be curr gen number
@@ -230,7 +232,9 @@ def vote():
     cursor.close()
     db.close()
     
-    return "Vote Success"
+    response = jsonify({'message': 'Vote successfully processed'})
+    
+    return response
 
 ###################################
 # Admin control, skip to next gen #
@@ -393,8 +397,8 @@ db = pymysql.connect(host = db_host,
                     database = db_name)
 cursor = db.cursor()
 
-# Reset DB and create initial gen
-clearDB()
+# # Reset DB and create initial gen
+# clearDB()
 curr_pop = ga.initial_gen()
 
 # Get new gen_number
@@ -449,5 +453,5 @@ cursor.close()
 db.close()
 
 if __name__ == '__main__':
-    api.run(host='0.0.0.0', port=5000, debug=False)
+    api.run(host='0.0.0.0', port=5000, debug=True)
     

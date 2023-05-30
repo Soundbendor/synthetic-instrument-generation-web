@@ -62,6 +62,7 @@ function AudioPlayers() {
   // Function to get sounds
   async function getInstrument_1() {
     const api_url = 'https://sig-api.9s7d9oh6r2mg0.us-east-1.cs.amazonlightsail.com';
+    // const api_url = 'http://127.0.0.1:5000';
     setIsLoading_1(true)
     axios({
       method: "GET",
@@ -82,8 +83,8 @@ function AudioPlayers() {
   
   async function getInstrument_2() {
     const api_url = 'https://sig-api.9s7d9oh6r2mg0.us-east-1.cs.amazonlightsail.com';
+    // const api_url = 'http://127.0.0.1:5000';
     setIsLoading_2(true)
-    console.log(`${api_url}/retrieve_member`)
     axios({
       method: "GET",
       url:`${api_url}/retrieve_member`,
@@ -112,7 +113,7 @@ function AudioPlayers() {
                 <source src={bird} type="video/webm" /> Your browser does not support the video tag.
               </video>
               <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                <PlayButton id = {1} loading={isLoading_1} instrument={instrument_1} />
+                <PlayButton id = {1} loading = {isLoading_1} instrument = {instrument_1} />
                 <VoteButton id = {1}
                   onClick={() => {
                     getInstrument_1();
