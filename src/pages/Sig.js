@@ -106,10 +106,10 @@ function AudioPlayers() {
   return (
     <div>
       <h1>Synthetic Instrument Generation</h1>
-      <div style={{ zIndex: "-5", display: "flex", justifyContent: "center", width: "100%", margin: "0", minHeight: "100%", height: "100%" }}>
-          <div className="voteBox" style={{ height: "100%", display: "flex", flexDirection: "column", alignItems: "center" }}>
+      <div style={{ zIndex: "-5", display: "flex", justifyContent: "center", width: "100vw", margin: "0", minHeight: "100vh", height: "100vh" }}>
+          <div className="voteBox" style={{ height: "100vh", display: "flex", flexDirection: "column", alignItems: "center" }}>
             <div className="voteElements">
-              <video className="videoPlayer" width="320" height="240" autoPlay muted>
+              <video className="videoPlayer" width="160" height="120" autoPlay muted>
                 <source src={bird} type="video/webm" /> Your browser does not support the video tag.
               </video>
               <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
@@ -132,7 +132,7 @@ function AudioPlayers() {
 
           <div className="voteBox" style={{ height: "100%", display: "flex", flexDirection: "column", alignItems: "center" }}>
             <div className="voteElements">
-              <video className="videoPlayer" width="320" height="240" autoPlay muted>
+              <video className="videoPlayer" width="160" height="120" autoPlay muted>
                 <source src={bird} type="video/webm" /> Your browser does not support the video tag.
               </video>
               <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
