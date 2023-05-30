@@ -327,12 +327,7 @@ class GA:
 
 
 
-db = pymysql.connect(host = 'sigdb.cmnz4advdpzd.us-west-2.rds.amazonaws.com',
-                user = 'admin',
-                password = 'Beaver!1',
-                database = 'sig')
 
-cursor = db.cursor()
 
 # Retrieves all the tables, just their title not the content
 # sql = '''show tables'''
@@ -376,7 +371,13 @@ cursor = db.cursor()
 
 
 def retrieve_member(chromosomeID):
+    db = pymysql.connect(host = 'sigdb.cmnz4advdpzd.us-west-2.rds.amazonaws.com',
+                user = 'admin',
+                password = 'Beaver!1',
+                database = 'sig')
 
+    cursor = db.cursor()
+    
     # in the future, will probably need to pick member based on a different criteria than their chromosome ID
 
     # Finds a member given their chromosome ID then returns the harmonics, amplitudes and adsr values of that member
@@ -524,13 +525,19 @@ def retrieve_member(chromosomeID):
     member.set_parent1(parent1)
     member.set_parent2(parent2)
     member.set_gen_number(gen_num)
-
-
-
+    
+    cursor.close()
+    db.close()
     return member
 
 
 def add_population(gen_number):
+    db = pymysql.connect(host = 'sigdb.cmnz4advdpzd.us-west-2.rds.amazonaws.com',
+        user = 'admin',
+        password = 'Beaver!1',
+        database = 'sig')
+
+    cursor = db.cursor()
     
     # Create a new island with the generation number given
     sql = """INSERT INTO populations (generation_number) VALUES (%s)"""
@@ -546,6 +553,8 @@ def add_population(gen_number):
     # The database won't actually receive anything without this commit
     # @@@@@@@@@@@@@@@ UNCOMMENT THIS LINE when you are ready to actually send the inserts @@@@@@@@@@@@@@@ 
     db.commit()
+    cursor.close()
+    db.close()
 
     return populationID
 
@@ -555,7 +564,12 @@ def add_population(gen_number):
 # and instead of populationID being the param, the generation number is the param
 
 def add_member(member, populationID):
+    db = pymysql.connect(host = 'sigdb.cmnz4advdpzd.us-west-2.rds.amazonaws.com',
+                user = 'admin',
+                password = 'Beaver!1',
+                database = 'sig')
 
+    cursor = db.cursor()
 
     p1 = member.get_parent1()
     p1 = str(p1)
@@ -639,6 +653,9 @@ def add_member(member, populationID):
     # The database won't actually receive anything without this commit
     # @@@@@@@@@@@@@@@ UNCOMMENT THIS LINE when you are ready to actually send the inserts @@@@@@@@@@@@@@@ 
     db.commit()
+    
+    cursor.close()
+    db.close()
 
 
 # Will eventually need an update member function that can be used when a mutation occurs

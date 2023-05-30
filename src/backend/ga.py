@@ -2149,6 +2149,9 @@ def mutate_gene(population):
         amps = population[p].get_amps()
         for i in range(gene_length):
             amps[i] = amps[i] * scalar
+            
+            if amps[i] > 1.0:
+                amps[i] = 1.0
 
         population[p].set_amps(amps)
 
@@ -2171,6 +2174,9 @@ def mutate_gene(population):
         for i in range(gene_length):
             sustain[i] = sustain[i] * scalar
 
+            if sustain[i] > 1.0:
+                sustain[i] = 1.0
+        
         population[p].set_s(sustain)
 
     elif c == 5:
