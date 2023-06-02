@@ -21,7 +21,6 @@ voting_threshold = 0
 
 
 api = Flask(__name__)
-# CORS(api, origins='http://127.0.0.1:5000')
 CORS(api)
 
 
