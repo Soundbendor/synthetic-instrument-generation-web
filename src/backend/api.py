@@ -313,17 +313,6 @@ def clearDB():
     for sqlCall in sql:
         cursor.execute(sqlCall)
 
-    db.commit()
-    cursor.close()
-    db.close()
-
-    db = pymysql.connect(host = db_host,
-                        user = db_user,
-                        password = db_pass,
-                        database = db_name)
-
-    cursor = db.cursor()
-
     curr_pop = ga.initial_gen()
 
     # Get new gen_number
@@ -376,6 +365,7 @@ def clearDB():
     db.commit()
     cursor.close()
     db.close()
+    
     voting_threshold = 0
 
     return "Clear DB Success"
