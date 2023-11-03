@@ -335,7 +335,7 @@ def retrieve_member(chromosomeID):
 
     # Finds a member given their chromosome ID then returns the harmonics, amplitudes and adsr values of that member
 
-    db = pymysql.connect(host = 'sigdb.cmnz4advdpzd.us-west-2.rds.amazonaws.com',
+    db = pymysql.connect(host = 'sigdb.c0d83nl3fnfk.us-west-2.rds.amazonaws.com',
                 user = 'admin',
                 password = 'Beaver!1',
                 database = 'sig')
@@ -494,7 +494,7 @@ def retrieve_member(chromosomeID):
 
 def add_population(gen_number):
 
-    db = pymysql.connect(host = 'sigdb.cmnz4advdpzd.us-west-2.rds.amazonaws.com',
+    db = pymysql.connect(host = 'sigdb.c0d83nl3fnfk.us-west-2.rds.amazonaws.com',
                 user = 'admin',
                 password = 'Beaver!1',
                 database = 'sig')
@@ -526,7 +526,7 @@ def add_population(gen_number):
 # and instead of populationID being the param, the generation number is the param
 
 def add_member(member, populationID):
-    db = pymysql.connect(host = 'sigdb.cmnz4advdpzd.us-west-2.rds.amazonaws.com',
+    db = pymysql.connect(host = 'sigdb.c0d83nl3fnfk.us-west-2.rds.amazonaws.com',
                 user = 'admin',
                 password = 'Beaver!1',
                 database = 'sig')
@@ -624,7 +624,7 @@ def count_votes(chromosomeID):
     # Will take in the chromosome id of a member, find the number of votes they won and then divide them by
     # the number of votes they participated in to get a percentage/average that will be used to determine that member's fitness score
 
-    db = pymysql.connect(host = 'sigdb.cmnz4advdpzd.us-west-2.rds.amazonaws.com',
+    db = pymysql.connect(host = 'sigdb.c0d83nl3fnfk.us-west-2.rds.amazonaws.com',
                 user = 'admin',
                 password = 'Beaver!1',
                 database = 'sig')
@@ -673,7 +673,7 @@ def count_votes(chromosomeID):
 
 # look for two islands at the same generation level, swap two members by updating each member's population id
 def swap_island_members():
-    db = pymysql.connect(host = 'sigdb.cmnz4advdpzd.us-west-2.rds.amazonaws.com',
+    db = pymysql.connect(host = 'sigdb.c0d83nl3fnfk.us-west-2.rds.amazonaws.com',
             user = 'admin',
             password = 'Beaver!1',
             database = 'sig')
